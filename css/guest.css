@@ -1,0 +1,33 @@
+/* ---------- Guest ---------- */
+.guest { position: relative; }
+.guest__avatar { width: clamp(60px, 9vw, 150px); aspect-ratio: 3/4; object-fit: cover; align-self: flex-start; margin-left: auto; border: var(--line); }
+.sec-title__count--r { order: 3; margin-left: 2vw; font-size: .3em; align-self: flex-start; }
+.guest__grid { display: grid; grid-template-columns: 1fr 1fr; border-top: var(--line); }
+.g {
+  position: relative; display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr auto;
+  min-height: clamp(150px, 16vw, 260px); padding: 12px 14px 0; border-bottom: var(--line);
+  overflow: hidden; transition: filter .3s;
+}
+.g:nth-child(odd) { border-right: var(--line); }
+.g__name { font-size: clamp(26px, 3.2vw, 58px); line-height: .92; letter-spacing: -.035em; }
+.g__nos { font-size: clamp(12px, 1.2vw, 20px); text-align: right; }
+.g__bn { grid-column: 1; font-family: var(--bn-sans); font-size: 12px; margin-top: 8px; align-self: start; }
+.g__body { grid-column: 2; grid-row: 2; writing-mode: vertical-rl; font-size: 10px; line-height: 1.5; max-height: 9em; justify-self: end; overflow: hidden; }
+.g__strip { grid-column: 1 / -1; grid-row: 3; margin: 10px -14px 0; border-top: var(--line); font-size: 11px; padding: 4px 0; background: rgba(255,255,255,.35); }
+.g::after { content: ""; position: absolute; inset: 0; background: var(--ink); opacity: 0; transition: opacity .3s; pointer-events: none; mix-blend-mode: multiply; }
+.g:hover::after { opacity: .12; }
+.guest__hover {
+  position: fixed; top: 0; left: 0; width: 200px; aspect-ratio: 3/4; object-fit: cover; z-index: 40;
+  pointer-events: none; border: var(--line); opacity: 0; transform: translate(-50%, -50%) scale(.8);
+  transition: opacity .25s, transform .25s;
+}
+.guest__hover.is-on { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+.viewall { display: block; background: var(--ink); color: #fff; font-size: clamp(28px, 4vw, 64px); letter-spacing: -.03em; padding: .1em 0; }
+.viewall:hover { background: var(--pink); }
+
+@media (max-width: 860px) {
+  .guest__grid { grid-template-columns: 1fr; }
+  .g:nth-child(odd) { border-right: 0; }
+  .guest__hover { display: none; }
+}

@@ -1,0 +1,23 @@
+/* ---------- Episodes ---------- */
+.sec-title--episodes { white-space: nowrap; overflow: hidden; flex-wrap: nowrap; }
+.episodes__thumb { position: absolute; right: 12vw; bottom: -2vw; width: clamp(120px, 20vw, 340px); border: var(--line); z-index: 2; }
+.episodes__hint { padding: 0 var(--gutter); font-size: 11px; margin-bottom: 8px; }
+.episodes__board { position: relative; height: clamp(560px, 62vw, 980px); border-top: var(--line); border-bottom: var(--line); overflow: hidden; touch-action: pan-y; }
+.ep {
+  position: absolute; width: clamp(170px, 17vw, 270px); background: #fff; border: 2px solid var(--ink);
+  padding: 8px; cursor: grab; user-select: none; touch-action: none;
+  box-shadow: 4px 4px 0 var(--ink); transition: box-shadow .2s;
+}
+.ep:hover { box-shadow: 6px 6px 0 var(--pink); }
+.ep.is-drag { cursor: grabbing; box-shadow: 10px 10px 0 var(--pink); }
+.ep__head { display: flex; align-items: center; gap: 6px; font-size: clamp(22px, 2.2vw, 36px); letter-spacing: -.03em; line-height: 1; }
+.ep__tag { font-family: var(--bn-sans); font-size: 10px; background: var(--ink); color: #fff; padding: 2px 6px; letter-spacing: 0; }
+.ep__body { display: grid; grid-template-columns: 1fr 64px; gap: 8px; margin-top: 8px; align-items: end; }
+.ep__title { font-size: 11px; line-height: 1.35; }
+.ep__body img { width: 64px; aspect-ratio: 3/4; object-fit: cover; border: 1px solid var(--ink); pointer-events: none; }
+.ep__go { position: absolute; left: 8px; bottom: 8px; width: 18px; height: 18px; border: 1px solid var(--ink); display: grid; place-items: center; font-size: 11px; }
+
+@media (max-width: 860px) {
+  .episodes__board { height: 1100px; }
+  .ep { width: 160px; }
+}

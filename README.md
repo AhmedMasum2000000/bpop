@@ -15,8 +15,9 @@ python3 -m http.server 8000
 | `index.html` | Home: loader, hero/about, Highlight, Guest, Other Episodes, Personality, footer, fixed bottom nav |
 | `story.html?id=…` | Story detail page, rendered from the same data |
 | `js/data.js` | **All content** — highlights, guests, episodes, team, links. Edit this to update the site. |
-| `js/main.js` | Rendering + interactions (loader counters, stroke draw-in, marquees, hover preview, draggable collage, parallax) |
-| `css/style.css` | Styles |
+| `js/core.js` | Shared helpers (`window.BP`): scroll/resize loop, reveal observer, marquees, parallax |
+| `js/<section>.js` | One script per section: shell (loader/nav), hero, highlight, guest, episodes, personality |
+| `css/<section>.css` | One stylesheet per section, plus `base.css` (tokens, shared utilities) and `story.css` |
 | `assets/` | Logo, mascot, tagline, and post artwork (`assets/posts/pNN.jpg`, cropped from the Instagram grid) |
 
 ## To do before launch

@@ -1,0 +1,20 @@
+/* ---------- Story page ---------- */
+.story { padding: 90px var(--gutter) 6vw; max-width: 1400px; margin: 0 auto; }
+.story__back { display: inline-block; font-size: 11px; border: var(--line); border-radius: 999px; padding: 6px 14px; margin-bottom: 4vw; }
+.story__back:hover { background: var(--ink); color: #fff; }
+.story__no { font-size: clamp(48px, 9vw, 160px); letter-spacing: -.05em; line-height: .8; }
+.story__title { font-weight: 400; font-size: clamp(36px, 6.4vw, 120px); line-height: .92; letter-spacing: -.04em; margin: 2vw 0 1vw; }
+.story__bn { font-family: var(--bn-serif); font-weight: 800; font-size: clamp(20px, 2.6vw, 44px); }
+.story__grid { display: grid; grid-template-columns: 5fr 7fr; gap: 4vw; margin-top: 4vw; align-items: start; }
+.story__img { border: var(--line); }
+.story__img img { width: 100%; }
+.story__meta { font-size: 11px; border-top: var(--line); border-bottom: var(--line); padding: 8px 0; margin-bottom: 20px; display: flex; justify-content: space-between; }
+.story__body { font-size: clamp(15px, 1.3vw, 19px); line-height: 1.8; }
+.story__cta { display: inline-block; margin-top: 28px; background: var(--ink); color: #fff; padding: 12px 20px; font-size: 12px; font-weight: 700; }
+.story__cta:hover { background: var(--pink); }
+.story__next { margin-top: 6vw; border-top: var(--line); padding-top: 18px; display: flex; justify-content: space-between; font-size: clamp(20px, 3vw, 48px); letter-spacing: -.03em; }
+.story__next a:hover { color: var(--pink); }
+
+@media (max-width: 860px) {
+  .story__grid { grid-template-columns: 1fr; }
+}
