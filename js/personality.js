@@ -41,18 +41,18 @@
      Each entry: name / role / bio = [x, y, rotate°], line = [x, y, length, rotate°];
      m* = the mobile equivalents, mmax = mobile wrap width for the name. */
   const SPOTS = [
-    { name: [232, 34, 5], role: [112, 82, -18], bio: [60, 150, 7], line: [88, 222, 960, -1.4],
-      mname: [20, 22, 3], mrole: [36, 116, -14], mbio: [158, 102, 6], mline: [16, 176, 342, 7], mmax: 300 },
-    { name: [168, 292, -3], role: [960, 352, 9], bio: [650, 380, 3.5], line: [150, 452, 600, 7],
-      mname: [26, 226, -8], mrole: [262, 298, 10], mbio: [22, 292, 5], mline: [190, 380, 170, -42] },
+    { name: [232, 64, 5], role: [112, 104, -18], bio: [60, 170, 7], line: [88, 244, 960, -1.4],
+      mname: [20, 24, 3], mrole: [44, 116, -12], mbio: [156, 96, 6], mline: [16, 170, 342, 7], mmax: 300 },
+    { name: [168, 306, -3], role: [920, 330, 9], bio: [640, 398, 3.5], line: [150, 470, 600, 7],
+      mname: [20, 232, -8], mrole: [262, 300, 12], mbio: [20, 292, 4], mline: [20, 352, 200, 6] },
     { name: [962, 352, 83], role: [1290, 706, -48], bio: [1272, 150, 97], line: [1186, 22, 760, 84],
-      mname: [168, 500, 82], mrole: [300, 682, -58], mbio: [196, 404, 94], mline: [244, 400, 280, 82] },
-    { name: [10, 538, 17], role: [56, 642, -8], bio: [196, 694, 4], line: [640, 808, 400, -53],
-      mname: [12, 430, 14], mrole: [22, 386, -6], mbio: [30, 512, 4], mline: [14, 580, 220, 5] },
-    { name: [490, 648, -14], role: [1010, 770, 9], bio: [900, 420, -6], line: [690, 575, 440, -14],
-      mname: [14, 640, 13], mrole: [186, 742, -6], mbio: [150, 600, -4], mline: [10, 722, 170, -14], mmax: 360 },
+      mname: [190, 548, 84], mrole: [264, 378, -55], mbio: [168, 500, 94], mline: [196, 760, 160, -28] },
+    { name: [10, 548, 17], role: [56, 650, -8], bio: [196, 700, 4], line: [528, 812, 300, -56],
+      mname: [18, 404, 8], mrole: [140, 470, -6], mbio: [20, 506, 4], mline: [14, 572, 215, 5], mmax: 200 },
+    { name: [672, 566, -20], role: [1000, 774, 8], bio: [900, 420, -6], line: [980, 540, 200, -14],
+      mname: [16, 616, 10], mrole: [150, 704, -6], mbio: [150, 640, -3], mline: [12, 724, 120, -8], mmax: 230, dmax: 560 },
   ];
-  const ETC = { role: [112, 792, -7.5], line: [58, 768, 420, 2] };
+  const ETC = { role: [112, 794, -7.5], line: [58, 770, 400, 2] };
 
   const vars = (d, m, w, mw) =>
     `--x:${d[0]};--y:${d[1]};--r:${d[d.length - 1]}deg;--mx:${m[0]};--my:${m[1]};--mr:${m[m.length - 1]}deg` +
@@ -61,7 +61,7 @@
   list.innerHTML = D.team
     .map((m, k) => {
       const s = SPOTS[k % SPOTS.length];
-      return `<li class="pn pn--${(k % SPOTS.length) + 1}" data-k="${k}"${s.mmax ? ` style="--mmax:${s.mmax}"` : ""}>
+      return `<li class="pn pn--${(k % SPOTS.length) + 1}" data-k="${k}"${s.mmax || s.dmax ? ` style="--mmax:${s.mmax || 330};--dmax:${s.dmax || 2000}"` : ""}>
         <span class="pn__line" style="${vars(s.line, s.mline, s.line[2], s.mline[2])}" aria-hidden="true"></span>
         <h3 class="pn__name" style="${vars(s.name, s.mname)}">${esc(m.name)}</h3>
         <p class="pn__role" style="${vars(s.role, s.mrole)}">${esc(m.role)}</p>

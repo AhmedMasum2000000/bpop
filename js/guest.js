@@ -76,7 +76,10 @@
   count.textContent = reduced ? guests.length : 0;
 
   function scrollImages(box, srcs, step) {
-    box.innerHTML = srcs.map((s) => `<img src="${esc(s)}" alt="" decoding="async">`).join("");
+    // each frame is one image, or a strip of several (keeps the wide header crisp with portrait artwork)
+    box.innerHTML = srcs
+      .map((s) => `<span class="gs-frame">${[].concat(s).map((x) => `<img src="${esc(x)}" alt="" decoding="async">`).join("")}</span>`)
+      .join("");
     const imgs = [...box.children];
     let cur = -1, z = 1;
     const show = (i) => {
@@ -92,7 +95,8 @@
     };
     return { show, update: () => show(Math.floor(scrollY / step) % imgs.length) };
   }
-  const wide = scrollImages($("#gsWide"), guests.map((g) => g.img), 250);
+  const strips = guests.map((g, i) => [g.img, guests[(i + 3) % guests.length].img, guests[(i + 5) % guests.length].img]);
+  const wide = scrollImages($("#gsWide"), strips, 250);
   const tall = scrollImages($("#gsTall"), ["assets/posts/p20.jpg", "assets/posts/p25.jpg", "assets/posts/p12.jpg", "assets/posts/p23.jpg", "assets/posts/p29.jpg", "assets/posts/p05.jpg"], 160);
 
   function countUp(el, to, dur = 1000) {

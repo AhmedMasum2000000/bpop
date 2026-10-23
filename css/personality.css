@@ -88,7 +88,7 @@
 .pn__name {
   font-family: var(--sans); font-weight: 400;
   font-size: calc(85 * var(--u)); line-height: 1; letter-spacing: -.02em;
-  white-space: nowrap;
+  width: max-content; max-width: calc(var(--dmax, 2000) * var(--u));
   pointer-events: auto; cursor: default;
 }
 .pn__role {
@@ -125,9 +125,9 @@
   .personality__thumb { bottom: 46px; right: 18px; width: 50px; }
   .personality__bn { bottom: 22px; right: 16px; font-size: 12px; }
 
-  .personality__stage { aspect-ratio: 375 / 830; }
+  .personality__stage { aspect-ratio: 375 / 880; }
   .pn > * { left: calc(var(--mx) * var(--u)); top: calc(var(--my) * var(--u)); transform: rotate(var(--mr)); }
-  .pn__name { font-size: calc(36 * var(--u)); white-space: normal; width: max-content; max-width: calc(var(--mmax, 330) * var(--u)); }
+  .pn__name { font-size: calc(36 * var(--u)); max-width: calc(var(--mmax, 330) * var(--u)); }
   .pn__role { font-size: calc(20 * var(--u)); }
   .pn__bio { max-width: 200px; font-size: 11px; }
   .pn__line { width: calc(var(--mw) * var(--u)); height: 5px; background: var(--paper); }

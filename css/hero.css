@@ -123,7 +123,7 @@
    ========================================================================== */
 .hero__about {
   position: relative; z-index: 2;
-  margin-top: 44px;
+  margin: 44px 10px 0;
   padding: 16.94vw 4.86vw 9.44vw;
 }
 .hb {
@@ -163,16 +163,16 @@
 .hb--b2 .hb__bn { margin-top: 24px; }
 .hb--b2 .hb__big { margin-top: 20px; }
 
-.hb--b3 { position: absolute; z-index: 20; top: -78px; right: -20.2vw; width: 81.94%; margin: 0; }
+.hb--b3 { position: absolute; z-index: 20; top: -78px; right: -20.2vw; width: 81.94%; max-height: 82%; margin: 0; }
 .hb--b3 .hb__in { display: flex; align-items: flex-start; gap: 40px; padding: 2.6% 2.45% 2%; }
 .hb__vcol { flex: 0 0 59.65%; min-width: 0; }
 .hb__big--v { writing-mode: vertical-rl; white-space: nowrap; width: 100%; }
 .hb__side { min-width: 0; }
 .hb--b3 .hb__en { margin-top: 0; }
 
-.hb--b4 { position: absolute; z-index: 10; top: 0; left: -13.54vw; margin: 0; }
+.hb--b4 { position: absolute; z-index: 10; top: 0; left: -13.54vw; max-height: 84%; margin: 0; }
 .hb--b4 .hb__in { padding: 2.6% 2.6% 1.75%; }
-.hb__en--v { writing-mode: vertical-rl; transform: rotate(180deg); height: 40.1vw; width: 100%; }
+.hb__en--v { writing-mode: vertical-rl; transform: rotate(180deg); height: 38vw; width: 100%; overflow: hidden; }
 .hb--b4 .hb__big, .hb--b4 .hb__bn { margin-top: 40px; }
 
 .hb--b5 { position: absolute; z-index: 0; bottom: 6vw; right: -9.3vw; margin: 0; }
@@ -314,7 +314,7 @@
     margin: 6px 0 4px 10px;
   }
 
-  .hero__about { margin-top: 14px; padding: 20px 20px 60px; }
+  .hero__about { margin: 14px 8px 0; padding: 20px 20px 60px; }
   .hb { --bw: 5px; width: 100%; }
   .hb__in { padding: 14px 12px; }
   .hb__blk--bn, .hb__blk--en { margin-top: 4px; }
@@ -326,10 +326,10 @@
   .hb__w--3 { bottom: 16px; right: 0; width: 50.9%; aspect-ratio: 145 / 70; transform: none; }
 
   .hb--b2, .hb--b4 { display: none; }
-  .hb--b3 { top: 0; right: -36vw; width: 88vw; }
+  .hb--b3 { top: 0; right: -36vw; width: 88vw; max-height: 100%; }
   .hb--b3 .hb__in { flex-direction: column; gap: 16px; padding: 16px 12px 12px; }
   .hb__vcol { flex: none; width: 60%; }
-  .hb--b5 { z-index: 30; bottom: 32px; left: -25vw; right: auto; width: 88vw; }
+  .hb--b5 { z-index: 30; bottom: 32px; left: -25vw; right: auto; width: 88vw; max-height: calc(100% - 52px); }
   .hb--b5 .hb__in { padding: 14px 12px; }
   .hb--b2 .hb__bn, .hb--b5 .hb__bn { margin-top: 6px; }
   .hb--b2 .hb__big, .hb--b5 .hb__big { margin-top: 5px; }
