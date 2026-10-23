@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Story — B-POP Tags</title>
+  <link rel="icon" href="assets/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Noto+Serif+Bengali:wght@500;800&family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <a class="header__left" href="index.html#about">BANGLA POP TAGS<br><span>Pop-culture &amp; underground</span></a>
+    <a class="header__logo" href="index.html" aria-label="B-POP Tags home"><img src="assets/logo.png" alt="B-POP Tags" /></a>
+    <a class="header__btn" href="" data-link="instagram" target="_blank" rel="noopener">Follow&nbsp;↗</a>
+  </header>
+
+  <main class="story" id="story">
+    <a class="story__back" href="index.html">← BACK TO INDEX</a>
+    <p class="story__no" id="sNo"></p>
+    <h1 class="story__title" id="sTitle"></h1>
+    <p class="story__bn" id="sBn"></p>
+    <div class="story__grid">
+      <figure class="story__img"><img id="sImg" alt="" /></figure>
+      <div>
+        <div class="story__meta"><span id="sKind"></span><span id="sGuest"></span></div>
+        <p class="story__body" id="sBody"></p>
+        <a class="story__cta" href="" data-link="instagram" target="_blank" rel="noopener">READ THE FULL POST ON INSTAGRAM ↗</a>
+      </div>
+    </div>
+    <nav class="story__next"><a id="sPrev" href="#">← PREV</a><a id="sNext" href="#">NEXT →</a></nav>
+  </main>
+
+  <nav class="bnav" aria-label="Sections">
+    <span class="bnav__brand">Presented by B-POP Tags ✦</span>
+    <ul class="bnav__links">
+      <li><a href="index.html#about">ABOUT</a></li>
+      <li><a href="index.html#highlight">HIGHLIGHT</a></li>
+      <li><a href="index.html#guest">GUEST</a></li>
+      <li><a href="index.html#episodes">OTHER EPISODES</a></li>
+      <li><a href="index.html#personality">PERSONALITY</a></li>
+    </ul>
+    <ul class="bnav__ext">
+      <li><a href="" data-link="instagram" target="_blank" rel="noopener">INSTAGRAM</a></li>
+      <li><a href="" data-link="linktree" target="_blank" rel="noopener">LINKTREE</a></li>
+    </ul>
+  </nav>
+
+  <script src="js/data.js"></script>
+  <script>
+    (() => {
+      const D = window.BPOP;
+      document.querySelectorAll("[data-link]").forEach((a) => (a.href = D.links[a.dataset.link]));
+      const all = [
+        ...D.highlights.map((h) => ({ ...h, kind: "HIGHLIGHT", label: h.guest })),
+        ...D.guests.map((g) => ({ ...g, kind: "GUEST", title: g.name.join(" ").trim(), label: g.nos })),
+        ...D.episodes.map((e) => ({ ...e, kind: "EPISODE", bn: e.tag, label: "#" + String(e.no).padStart(2, "0"),
+          body: e.body || "This story lives on our Instagram. Swipe through the carousel for the full tag." })),
+      ];
+      const id = new URLSearchParams(location.search).get("id");
+      let i = all.findIndex((s) => s.id === id);
+      if (i < 0) i = 0;
+      const s = all[i];
+      const set = (sel, v) => (document.getElementById(sel).textContent = v);
+      set("sNo", s.no ? "#" + s.no : s.nos || "");
+      set("sTitle", s.title);
+      set("sBn", s.bn || "");
+      set("sKind", s.kind);
+      set("sGuest", s.label || "");
+      set("sBody", s.body || "");
+      const img = document.getElementById("sImg");
+      img.src = s.img;
+      img.alt = s.title;
+      document.title = s.title + " — B-POP Tags";
+      const link = (k) => "story.html?id=" + encodeURIComponent(all[(i + k + all.length) % all.length].id);
+      document.getElementById("sPrev").href = link(-1);
+      document.getElementById("sNext").href = link(1);
+    })();
+  </script>
+</body>
+</html>
