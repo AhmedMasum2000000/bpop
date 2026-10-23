@@ -1,50 +1,127 @@
+// GUEST — counting header with scroll-swapped images, a two-column grid of coloured tiles that cut away on
+// hover to reveal the guest's artwork, and a black VIEW ALL / CLOSE marquee bar that opens the rest of the grid.
 (() => {
-  const { D, $, fillMarquee, storyUrl } = window.BP;
+  const { D, $, $$, reduced, onScroll, storyUrl, fillMarquee } = window.BP;
   const grid = $("#guestGrid");
-  grid.innerHTML = D.guests
-    .map(
-      (g) => `
-    <a class="g" href="${storyUrl(g.id)}" style="background:${g.color}" data-img="${g.img}">
-      <div class="g__name">${g.name[0]}<br>${g.name[1] || "&nbsp;"}</div>
-      <div class="g__nos">${g.nos}</div>
-      <div class="g__bn">গেস্ট : ${g.bn}</div>
-      <p class="g__body">${g.body}</p>
-      <div class="g__strip marquee"><div class="marquee__track"></div></div>
-    </a>`
-    )
-    .join("");
-  grid.querySelectorAll(".g__strip .marquee__track").forEach((t, i) => {
-    fillMarquee(t, "STORY DETAIL&nbsp;·&nbsp;", 8);
-    t.style.animationDuration = 14 + (i % 3) * 4 + "s";
-    if (i % 2) t.style.animationDirection = "reverse";
-  });
-  $("#guestCount").textContent = D.guests.length;
-  fillMarquee($(".viewall .marquee__track"));
+  if (!grid) return;
+  const SHOWN = 6; // tiles visible before VIEW ALL
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  const guests = D.guests;
 
-  // image preview that trails the cursor
-  const hover = $("#guestHover");
-  let hx = 0, hy = 0, cx = 0, cy = 0, raf = 0;
-  const follow = () => {
-    cx += (hx - cx) * 0.18;
-    cy += (hy - cy) * 0.18;
-    hover.style.left = cx + "px";
-    hover.style.top = cy + "px";
-    raf = Math.abs(hx - cx) + Math.abs(hy - cy) > 0.5 ? requestAnimationFrame(follow) : 0;
-  };
-  grid.addEventListener("pointermove", (e) => {
-    hx = e.clientX + 120;
-    hy = e.clientY;
-    if (!raf) raf = requestAnimationFrame(follow);
+  // ---------- tiles ----------
+  grid.innerHTML = guests
+    .map((g, i) => {
+      const name = g.name.filter(Boolean).map(esc).join("<br>");
+      const nos = esc(g.nos);
+      const plain = nos.replace(/^#/, "");
+      return `
+    <li class="gt${i >= SHOWN ? " is-extra" : ""}" style="--c:${esc(g.color)}">
+      <a class="gt__link" href="${storyUrl(g.id)}">
+        <div class="gt__card">
+          <div class="gt__cols">
+            <div class="gt__main">
+              <p class="gt__nos gt__nos--sp">${nos},</p>
+              <h3 class="gt__name">${name}</h3>
+              <p class="gt__credit" lang="bn">গেস্ট : ${esc(g.nameBn || g.name.join(" "))}</p>
+              <p class="gt__body">${esc(g.body)}</p>
+            </div>
+            <div class="gt__side">
+              <p class="gt__nos gt__nos--pc">${nos},</p>
+              <p class="gt__vert" lang="bn">${esc(g.bn)}</p>
+            </div>
+          </div>
+          <div class="gt__strip" aria-hidden="true"><span class="marquee__track"></span></div>
+        </div>
+        <div class="gt__under" aria-hidden="true">
+          <img src="${esc(g.img)}" alt="" loading="lazy" decoding="async">
+          <p class="gt__big">${plain},<br>${name}</p>
+        </div>
+      </a>
+    </li>`;
+    })
+    .join("");
+  $$(".gt__strip .marquee__track", grid).forEach((t, i) => {
+    fillMarquee(t, "STORY DETAIL.", 6);
+    t.style.animationDelay = -(i * 2.3) + "s";
   });
-  grid.querySelectorAll(".g").forEach((g) => {
-    g.addEventListener("pointerenter", (e) => {
-      hover.src = g.dataset.img;
-      if (!hover.classList.contains("is-on")) {
-        cx = hx = e.clientX + 120;
-        cy = hy = e.clientY;
-      }
-      hover.classList.add("is-on");
+
+  // ---------- VIEW ALL / CLOSE ----------
+  const more = $("#guestMore");
+  const track = $(".gs-more__track", more);
+  track.classList.add("marquee__track");
+  const setLabel = (open) => fillMarquee(track, open ? "CLOSE" : "VIEW ALL", 8);
+  if (guests.length > SHOWN) {
+    setLabel(false);
+    more.setAttribute("aria-label", "View all guests");
+    more.addEventListener("click", () => {
+      const open = !grid.classList.contains("is-open");
+      grid.classList.toggle("is-open", open);
+      more.setAttribute("aria-expanded", String(open));
+      more.setAttribute("aria-label", open ? "Show fewer guests" : "View all guests");
+      setLabel(open);
+      // after closing, keep the bar on screen instead of leaving the reader below the shortened grid
+      const b = more.getBoundingClientRect();
+      if (!open && b.top < 0) scrollTo({ top: scrollY + b.top - innerHeight * 0.6, behavior: "auto" });
     });
-    g.addEventListener("pointerleave", () => hover.classList.remove("is-on"));
+  } else {
+    // nothing hidden: the bar becomes a link to the full archive on Instagram
+    setLabel(false);
+    more.setAttribute("aria-label", "View all on Instagram");
+    more.addEventListener("click", () => open(D.links.instagram, "_blank", "noopener"));
+  }
+
+  // ---------- header: counter + scroll-swapped images ----------
+  const head = $("#gsHead");
+  const count = $("#guestCount");
+  count.textContent = reduced ? guests.length : 0;
+
+  function scrollImages(box, srcs, step) {
+    box.innerHTML = srcs.map((s) => `<img src="${esc(s)}" alt="" decoding="async">`).join("");
+    const imgs = [...box.children];
+    let cur = -1, z = 1;
+    const show = (i) => {
+      if (i === cur) return;
+      const prev = imgs[cur], next = imgs[i];
+      imgs.forEach((im) => im !== prev && im !== next && (im.className = ""));
+      if (prev) prev.className = "is-prev";
+      next.className = "";
+      next.style.zIndex = ++z;
+      void next.offsetWidth;
+      next.className = "is-on";
+      cur = i;
+    };
+    return { show, update: () => show(Math.floor(scrollY / step) % imgs.length) };
+  }
+  const wide = scrollImages($("#gsWide"), guests.map((g) => g.img), 250);
+  const tall = scrollImages($("#gsTall"), ["assets/posts/p20.jpg", "assets/posts/p25.jpg", "assets/posts/p12.jpg", "assets/posts/p23.jpg", "assets/posts/p29.jpg", "assets/posts/p05.jpg"], 160);
+
+  function countUp(el, to, dur = 1000) {
+    if (reduced) return (el.textContent = to);
+    const t0 = performance.now();
+    const tick = (now) => {
+      const p = Math.min(1, (now - t0) / dur);
+      el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
+  let on = false;
+  new IntersectionObserver(
+    (entries, io) => entries.forEach((en) => {
+      if (!en.isIntersecting) return;
+      head.classList.add("is-in");
+      on = true;
+      wide.show(0);
+      tall.show(0);
+      countUp(count, guests.length);
+      io.disconnect();
+    }),
+    { threshold: 0.35 }
+  ).observe(head);
+  onScroll(() => {
+    if (!on || reduced) return;
+    wide.update();
+    tall.update();
   });
 })();

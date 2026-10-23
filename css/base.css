@@ -1,52 +1,105 @@
-/* B-POP Tags — editorial magazine site */
+/* B-POP Tags — editorial magazine site
+   Tokens, base typography and the shared utilities every section relies on
+   (.wire, .marquee, .reveal, .sec-title). Section files override these only via
+   section-scoped selectors. */
 :root {
+  /* colour */
   --ink: #0b0b0b;
   --paper: #ffffff;
   --cream: #fff8f1;
   --pink: #ff2ea6;
   --pink-soft: #ffd3ee;
-  --line: 1.5px solid var(--ink);
-  --sans: "Helvetica Neue", Helvetica, Arimo, Arial, sans-serif;
+
+  /* hairlines — the layout is drawn with 1px black rules */
+  --line-w: 1px;
+  --line: var(--line-w) solid var(--ink);
+
+  /* type families
+     --sans  : grotesk for English display + UI ("en" voice)
+     --serif : high-contrast serif for labels, nav, pills and heavy story text
+     --bn-*  : Bangla voices (serif for display, sans for running copy) */
+  --sans: "Helvetica Neue", Helvetica, Arimo, Arial, "Hind Siliguri", sans-serif;
+  --en: var(--sans);
+  --serif: "Playfair", "Playfair Display", "Noto Serif Bengali", Georgia, serif;
   --bn-serif: "Noto Serif Bengali", serif;
   --bn-sans: "Hind Siliguri", sans-serif;
+
+  /* type scale (fluid between 390 and 1440) */
+  --fs-10: 10px;
+  --fs-12: 12px;
+  --fs-14: 14px;
+  --fs-16: 16px;
+  --fs-20: 20px;
+  --fs-body: clamp(15px, 1.25vw, 18px);
+
+  /* spacing */
   --gutter: clamp(12px, 2.2vw, 32px);
-  --nav-h: 34px;
+  --edge: 20px;               /* fixed chrome inset (header, bottom bar) */
+  --nav-h: 36px;              /* height of the floating bottom bar */
+  --hdr-h: 67px;              /* top edge to bottom of the header logo pill */
+
+  /* motion */
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-io: cubic-bezier(.87, 0, .13, 1);
+  --ease-wipe: cubic-bezier(.65, 0, .35, 1);
+}
+@media (max-width: 767px) {
+  :root { --edge: 10px; --hdr-h: 38px; }
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-underline-offset: .125em;
+  scrollbar-width: none;          /* the bottom bar + progress line replace the scrollbar */
+}
+html::-webkit-scrollbar { display: none; }
 body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
   font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  padding-bottom: var(--nav-h);
 }
 body.is-loading { overflow: hidden; }
 img { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; }
 h1, h2, h3, p, figure { margin: 0; }
 ul { list-style: none; margin: 0; padding: 0; }
+[id] { scroll-margin-top: 5.5rem; }
+[hidden] { display: none !important; }
+::selection { background: var(--pink); color: #fff; }
+:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
 .pink { color: var(--pink); }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
 
 /* ---------- Generic ---------- */
-.reveal { opacity: 0; transform: translateY(40px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity .9s ease, transform .9s var(--ease-out); }
 .reveal.is-in { opacity: 1; transform: none; }
 
+/* Wireframe placeholder box: 1px frame with a crisp 1px "X" corner to corner.
+   The X is a non-scaling SVG stroke, so it stays a hairline at any aspect ratio. */
 .wire {
   position: relative; border: var(--line); background: #fff; overflow: hidden;
 }
-.wire::before, .wire::after {
+.wire::before {
   content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(to top right, transparent calc(50% - .75px), var(--ink) calc(50% - .75px), var(--ink) calc(50% + .75px), transparent calc(50% + .75px));
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0L100 100M100 0L0 100' fill='none' stroke='%230b0b0b' stroke-width='1' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
 }
-.wire::after { transform: scaleX(-1); }
 .wire img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.1); transition: filter .4s; }
 .wire:hover img { filter: none; }
 
+/* Marquee: track holds two identical halves; -50% loops seamlessly.
+   Set --marquee-dur on the track (or any ancestor) to change the speed. */
 .marquee { overflow: hidden; white-space: nowrap; }
-.marquee__track { display: inline-flex; animation: marquee 18s linear infinite; }
+.marquee__track { display: inline-flex; animation: marquee var(--marquee-dur, 18s) linear infinite; will-change: transform; }
 .marquee__track span { padding-right: .4em; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
@@ -66,6 +119,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 .sec-title__word--r { grid-area: l; justify-self: center; padding-left: 12vw; }
 
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .reveal { opacity: 1; transform: none; }
   .hero__title .line > span { transform: none; }

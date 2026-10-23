@@ -1,61 +1,229 @@
+// OTHER EPISODES — title reveal + scroll-cycled photo, then a board of episode cards.
+// Default: cards are scattered over the board and can be dragged (mouse / pen).
+// Grid button: cards glide into a 3-col (2-col on mobile) grid paged 12 at a time.
 (() => {
-  const { D, $, pad, storyUrl, onResize } = window.BP;
+  const { D, $, $$, reduced, pad, storyUrl, observe, onScroll, onResize } = window.BP;
+  const sec = $("#episodes");
+  if (!sec) return;
+  const head = $("#episodesHead");
+  const thumb = $("#episodesThumb");
   const board = $("#episodeBoard");
-  board.innerHTML = D.episodes
-    .map(
-      (e) => `
-    <a class="ep" href="${storyUrl(e.id)}" draggable="false">
-      <div class="ep__head">#${pad(e.no)}<span class="ep__tag">${e.tag}</span></div>
-      <div class="ep__body"><p class="ep__title">${e.title}</p><img src="${e.img}" alt="" loading="lazy"></div>
-      <span class="ep__go">→</span>
-    </a>`
-    )
-    .join("");
-  const eps = [...board.querySelectorAll(".ep")];
+  const track = $("#episodeTrack");
+  const btnGrid = $("#epToggle");
+  const btnNext = $("#epNext");
+  const btnPrev = $("#epPrev");
+  const cursor = $("#epCursor");
+  const PER = 12;
 
-  function layout() {
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const shuffle = (a) => { for (let i = a.length - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const ARROW = btnNext.querySelector(".ep-arrow").outerHTML;
+
+  /* ---------- title: reveal + photo that changes with scroll ---------- */
+  const shots = ["p34", "p21", "p06", "p33", "p14", "p35", "p27", "p32", "p03", "p22"];
+  thumb.innerHTML = shots
+    .map((n) => `<div class="ep-thumb__img"><img src="assets/posts/${n}.jpg" alt="" loading="lazy" decoding="async"></div>`)
+    .join("");
+  const layers = $$(".ep-thumb__img", thumb);
+  let shot = 0, zTop = 1;
+  layers[0].style.zIndex = ++zTop;
+  function showShot(k) {
+    const el = layers[k];
+    el.style.zIndex = ++zTop;
+    if (reduced || !el.animate) return;
+    const ease = "cubic-bezier(.22,1,.36,1)";
+    el.animate([{ clipPath: "inset(50%)" }, { clipPath: "inset(0%)" }], { duration: 700, easing: ease });
+    el.firstElementChild.animate([{ transform: "scale(1.2)" }, { transform: "scale(1)" }], { duration: 900, easing: ease });
+  }
+  observe(head);
+  onScroll(() => {
+    if (reduced || !head.classList.contains("is-in")) return;
+    const r = head.getBoundingClientRect();
+    if (r.bottom < -200 || r.top > innerHeight) return;
+    const k = Math.max(0, Math.floor((innerHeight - r.top) / 300)) % layers.length;
+    if (k !== shot) { shot = k; showShot(k); }
+  });
+
+  /* ---------- cards ---------- */
+  const eps = D.episodes.slice().sort((a, b) => a.no - b.no);
+  $("#epCount").textContent = eps.length;
+
+  const card = (e) => {
+    const no = pad(e.no);
+    return `<li class="ep-slot"><article class="ep" data-href="${storyUrl(e.ref || e.id)}">
+      <div class="ep__in">
+        <div class="ep__main">
+          <p class="ep__head"><span class="ep__no">#${no}</span><span class="ep__tag${e.outline ? " ep__tag--o" : ""}" lang="bn">${esc(e.tag)}</span></p>
+          ${e.bn ? `<h3 class="ep__bn" lang="bn">${esc(e.bn)}</h3>` : ""}
+          <p class="ep__en">${esc(e.title)}</p>
+        </div>
+        ${e.body ? `<p class="ep__desc">${esc(e.body)}</p>` : ""}
+      </div>
+      <a class="ep__go" href="${storyUrl(e.ref || e.id)}" data-cursor="OPEN" aria-label="Open #${no}: ${esc(e.title)}">${ARROW}</a>
+    </article></li>`;
+  };
+  let html = "";
+  for (let p = 0; p < eps.length; p += PER) html += `<ul class="episodes__page">${eps.slice(p, p + PER).map(card).join("")}</ul>`;
+  track.innerHTML = html;
+
+  const pagesEl = $$(".episodes__page", track);
+  const cards = $$(".ep", track);
+  const pos = cards.map(() => ({ x: 0, y: 0 }));
+  const pages = pagesEl.length;
+  let grid = false, page = 0, z = cards.length + 1, lastW = 0, lastPointer = "mouse";
+
+  const put = (i) => { cards[i].style.transform = `translate3d(${pos[i].x}px, ${pos[i].y}px, 0)`; };
+
+  // Let the cards glide for one transition (toggles only — not drags or resizes).
+  let animT;
+  function glide() {
+    if (reduced) return;
+    board.classList.add("is-anim");
+    clearTimeout(animT);
+    animT = setTimeout(() => board.classList.remove("is-anim"), 1300);
+  }
+
+  // Scatter: stratified random spots so even a few dozen cards blanket the board,
+  // spilling a little past every edge like a pile of paper.
+  function scatter() {
     const W = board.clientWidth, H = board.clientHeight;
-    const cw = eps[0].offsetWidth, ch = eps[0].offsetHeight;
-    const cols = Math.max(2, Math.min(Math.floor(W / (cw * 0.75)), Math.ceil(eps.length / 3)));
-    const rows = Math.ceil(eps.length / cols);
-    eps.forEach((el, i) => {
-      const r = i % rows, c = Math.floor(i / rows);
-      // deterministic jitter so the collage looks scattered but stable
-      const jx = Math.sin(i * 12.9898) * 0.5, jy = Math.cos(i * 78.233) * 0.5;
-      const x = (c / Math.max(1, cols - 1)) * (W - cw) + jx * cw * 0.35;
-      const y = (r / Math.max(1, rows - 1)) * (H - ch) + jy * ch * 0.4;
-      el.style.left = Math.max(0, Math.min(W - cw, x)) + "px";
-      el.style.top = Math.max(0, Math.min(H - ch, y)) + "px";
-      el.style.zIndex = i + 1;
+    const cw = cards[0].offsetWidth, ch = cards[0].offsetHeight;
+    const n = cards.length;
+    const cols = Math.max(2, Math.round(Math.sqrt((n * W) / H)));
+    const rows = Math.ceil(n / cols);
+    const cellW = (W - cw * 0.4) / cols, cellH = (H - ch * 0.45) / rows;
+    const cells = shuffle([...Array(cols * rows).keys()]).slice(0, n);
+    const stack = shuffle([...Array(n).keys()]);
+    cards.forEach((c, i) => {
+      const li = c.parentElement;
+      const k = cells[i];
+      const x = -cw * 0.3 + ((k % cols) + Math.random()) * cellW;
+      const y = -ch * 0.25 + (Math.floor(k / cols) + Math.random()) * cellH;
+      pos[i] = { x: x - li.offsetLeft, y: y - li.offsetTop };
+      c.style.zIndex = stack[i] + 1;
+      c.style.transitionDelay = reduced ? "" : `${(Math.random() * 0.18).toFixed(3)}s`;
+      put(i);
+    });
+    z = n + 1;
+  }
+
+  function lineUp() {
+    cards.forEach((c, i) => {
+      pos[i] = { x: 0, y: 0 };
+      c.style.zIndex = "";
+      c.style.transitionDelay = reduced ? "" : `${((i % PER) * 0.025).toFixed(3)}s`;
+      put(i);
     });
   }
 
-  let z = 100;
-  eps.forEach((el) => {
-    let sx, sy, ox, oy, moved = false, id = null;
-    el.addEventListener("pointerdown", (e) => {
+  function setPage(p) {
+    page = Math.max(0, Math.min(pages - 1, p));
+    track.style.transform = page ? `translate3d(${-100 * page}%, 0, 0)` : "";
+    btnPrev.disabled = page <= 0;
+    btnNext.disabled = page >= pages - 1;
+    // off-screen pages shouldn't take focus while the grid is paged
+    pagesEl.forEach((ul, k) => { ul.inert = grid && k !== page; });
+  }
+
+  // grid icon: nine dots that jump to random offsets (hover, or while in grid mode)
+  const dots = $$(".ep-btn__dots i", btnGrid);
+  const shuffleDots = () => dots.forEach((d) => {
+    d.style.setProperty("--rx", `${Math.round(Math.random() * 200 - 100)}%`);
+    d.style.setProperty("--ry", `${Math.round(Math.random() * 200 - 100)}%`);
+  });
+  shuffleDots();
+
+  function setGrid(on) {
+    grid = on;
+    board.classList.toggle("is-grid", on);
+    btnGrid.setAttribute("aria-pressed", String(on));
+    btnGrid.setAttribute("aria-label", on ? "Scatter the episodes again" : "Line the episodes up in a grid");
+    btnNext.hidden = btnPrev.hidden = !on;
+    shuffleDots();
+    glide();
+    setPage(0);
+    on ? lineUp() : scatter();
+  }
+  btnGrid.addEventListener("click", () => setGrid(!grid));
+  btnNext.addEventListener("click", () => setPage(page + 1));
+  btnPrev.addEventListener("click", () => setPage(page - 1));
+
+  // drag (mouse / pen only — touch keeps scrolling the page and taps open the story)
+  board.addEventListener("pointerdown", (e) => { lastPointer = e.pointerType; }, true);
+  cards.forEach((c, i) => {
+    let id = null, sx = 0, sy = 0, ox = 0, oy = 0;
+    c.addEventListener("pointerdown", (e) => {
+      if (grid || e.pointerType === "touch" || e.button !== 0 || e.target.closest("a")) return;
+      e.preventDefault();
       id = e.pointerId;
-      el.setPointerCapture(id);
-      sx = e.clientX; sy = e.clientY;
-      ox = el.offsetLeft; oy = el.offsetTop;
-      moved = false;
-      el.style.zIndex = ++z;
-      el.classList.add("is-drag");
+      c.setPointerCapture(id);
+      sx = e.clientX; sy = e.clientY; ox = pos[i].x; oy = pos[i].y;
+      c.style.zIndex = ++z;
+      c.classList.add("is-drag");
+      cursor.classList.add("is-down");
     });
-    el.addEventListener("pointermove", (e) => {
+    c.addEventListener("pointermove", (e) => {
       if (e.pointerId !== id) return;
-      const dx = e.clientX - sx, dy = e.clientY - sy;
-      if (Math.abs(dx) + Math.abs(dy) > 5) moved = true;
-      const W = board.clientWidth - el.offsetWidth, H = board.clientHeight - el.offsetHeight;
-      el.style.left = Math.max(0, Math.min(W, ox + dx)) + "px";
-      el.style.top = Math.max(0, Math.min(H, oy + dy)) + "px";
+      const li = c.parentElement, W = board.clientWidth, H = board.clientHeight;
+      const x = Math.max(60 - c.offsetWidth, Math.min(W - 60, li.offsetLeft + ox + e.clientX - sx));
+      const y = Math.max(60 - c.offsetHeight, Math.min(H - 60, li.offsetTop + oy + e.clientY - sy));
+      pos[i] = { x: x - li.offsetLeft, y: y - li.offsetTop };
+      put(i);
     });
-    const end = () => { id = null; el.classList.remove("is-drag"); };
-    el.addEventListener("pointerup", end);
-    el.addEventListener("pointercancel", end);
-    el.addEventListener("click", (e) => { if (moved) e.preventDefault(); });
+    const end = (e) => {
+      if (e.pointerId !== id) return;
+      id = null;
+      c.classList.remove("is-drag");
+      cursor.classList.remove("is-down");
+    };
+    c.addEventListener("pointerup", end);
+    c.addEventListener("pointercancel", end);
+    // touch taps anywhere on a card, and clicks in grid mode, open the story
+    c.addEventListener("click", (e) => {
+      if (e.target.closest("a")) return;
+      if (grid || lastPointer === "touch") location.href = c.dataset.href;
+    });
+    // keyboard: bring a buried card to the front when its link gets focus
+    c.addEventListener("focusin", () => { if (!grid) c.style.zIndex = ++z; });
   });
 
+  /* ---------- cursor badge (fine pointers) ---------- */
+  if (!reduced && matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    board.classList.add("has-cursor");
+    const label = cursor.firstElementChild;
+    let mx = 0, my = 0, tx = 0, ty = 0, cx = 0, cy = 0, inside = false, raf = 0, hover = null;
+    const aim = () => { const r = board.getBoundingClientRect(); tx = mx - r.left; ty = my - r.top; };
+    const tick = () => {
+      cx += (tx - cx) * 0.18; cy += (ty - cy) * 0.18;
+      cursor.style.transform = `translate3d(${cx.toFixed(1)}px, ${cy.toFixed(1)}px, 0)`;
+      raf = Math.abs(tx - cx) + Math.abs(ty - cy) > 0.3 ? requestAnimationFrame(tick) : 0;
+    };
+    const say = () => {
+      const t = hover && hover.closest("[data-cursor]");
+      const txt = t ? t.dataset.cursor : cursor.classList.contains("is-down") ? "DROP" : grid ? "OPEN" : "DRAG";
+      if (label.textContent !== txt) label.textContent = txt;
+    };
+    board.addEventListener("pointermove", (e) => {
+      if (e.pointerType !== "mouse") return;
+      mx = e.clientX; my = e.clientY; hover = e.target;
+      aim();
+      if (!inside) { inside = true; cx = tx; cy = ty; cursor.classList.add("is-on"); }
+      say();
+      if (!raf) raf = requestAnimationFrame(tick);
+    });
+    board.addEventListener("pointerdown", say);
+    board.addEventListener("pointerup", () => requestAnimationFrame(say));
+    board.addEventListener("pointerleave", () => { inside = false; cursor.classList.remove("is-on"); });
+    onScroll(() => { if (inside) { aim(); if (!raf) raf = requestAnimationFrame(tick); } });
+  }
+
+  /* ---------- init + resize ---------- */
+  function layout() {
+    const W = board.clientWidth;
+    if (W === lastW) return;            // ignore mobile URL-bar height jitter
+    lastW = W;
+    if (grid) setPage(page); else scatter();
+  }
   layout();
   onResize(layout);
 })();
