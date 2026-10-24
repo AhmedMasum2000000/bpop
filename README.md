@@ -2,11 +2,16 @@
 
 Editorial one-page site for **B-POP Tags (Bangla Pop Tags)** — curating pop-culture & the underground scene.
 
-Static HTML/CSS/JS, no build step and no dependencies. Open `index.html`, or serve the folder:
+Static HTML/CSS/JS, no build step and no dependencies. Open `index.html` directly, or run it with Node (18+):
 
 ```bash
-python3 -m http.server 8000
+npm install      # nothing to download — there are no dependencies
+npm run dev      # local server at http://localhost:5173 (PORT env var to change)
+npm run build    # copies the site into dist/ for hosts that want a build folder
+npm run preview  # serves dist/
 ```
+
+Any static server works too, e.g. `python3 -m http.server 8000`.
 
 ## Structure
 
@@ -18,6 +23,7 @@ python3 -m http.server 8000
 | `js/core.js` | Shared helpers (`window.BP`): scroll/resize loop, reveal observer, marquees, parallax |
 | `js/<section>.js` | One script per section: shell (loader/nav), hero, highlight, guest, episodes, personality |
 | `css/<section>.css` | One stylesheet per section, plus `base.css` (tokens, shared utilities) and `story.css` |
+| `scripts/` | Zero-dependency `serve.mjs` (dev server) and `build.mjs` (copies site into `dist/`) used by the npm scripts |
 | `assets/` | Logo, mascot, tagline, and post artwork (`assets/posts/pNN.jpg`, cropped from the Instagram grid) |
 
 ## To do before launch

@@ -1,0 +1,16 @@
+{
+  "name": "bpop-tags",
+  "version": "1.0.0",
+  "private": true,
+  "description": "B-POP Tags (Bangla Pop Tags) — editorial site for Bangladesh's pop-culture and underground scene. Static HTML/CSS/JS, no dependencies.",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "start": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs",
+    "preview": "node scripts/serve.mjs dist"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
