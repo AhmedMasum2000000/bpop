@@ -1,7 +1,7 @@
 // HIGHLIGHT — split title with an image that changes as you scroll, a counting #, and story rows framed by
 // thick outline strokes that draw in, wobble away from the cursor and leave a trail of post artwork behind it.
 (() => {
-  const { D, $, $$, reduced, observe, onScroll, onResize, storyUrl, fillMarquee } = window.BP;
+  const { D, $, $$, reduced, onScroll, onResize, storyUrl, fillMarquee } = window.BP;
   const section = $("#highlight");
   const list = $("#highlightList");
   if (!section || !list) return;
@@ -222,7 +222,7 @@
 
   // ---------- cursor wobble: points near the pointer are pushed away, then spring back ----------
   let raf = 0;
-  const RADIUS = 230, PUSH = 2.4, SPRING = 0.075, DAMP = 0.84;
+  const RADIUS = 240, PUSH = 4, SPRING = 0.06, DAMP = 0.86;
   let lastX = 0, lastY = 0;
   function poke(cx, cy) {
     const speed = Math.min(60, Math.hypot(cx - lastX, cy - lastY));

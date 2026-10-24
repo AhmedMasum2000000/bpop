@@ -71,7 +71,9 @@
 /* ---------- Header ---------- */
 .header {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: grid; grid-template-columns: 1fr auto 1fr; align-items: start; gap: 12px;
+  /* minmax(0,1fr): the 300px side chips shrink before the logo track does
+     (plain 1fr kept them at 300px and squashed the logo at 768-830px) */
+  display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: start; gap: 12px;
   padding: var(--edge);
   pointer-events: none;
 }
@@ -100,7 +102,7 @@
   padding: 9px 30px; background: #fff; border: var(--line); border-radius: 999px;
   transition: background-color .3s ease-out;
 }
-.header__logo img { height: 28px; width: auto; }
+.header__logo img { height: 28px; width: auto; max-width: none; }
 @media (hover: hover) { .header__logo:hover { background: var(--ink); } }
 
 /* right: latest story (label | ticker); inverts on hover */
@@ -236,6 +238,11 @@ body.menu-open { overflow: hidden; }
 
   .footer { text-align: left; padding: 28px 12px 72px; }
   .footer__credit { font-size: 10px; }
+}
+/* very narrow phones (<360): keep the credit clear of the centred MENU button */
+@media (max-width: 359px) {
+  .bnav__credit { font-size: 9px; }
+  .bnav__menu { padding: 6px 14px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

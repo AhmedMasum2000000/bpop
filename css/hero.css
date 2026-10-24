@@ -6,7 +6,7 @@
 .hero {
   --hx-ink: var(--ink);
   --hx-line: 1px solid var(--hx-ink);
-  --hx-ease: cubic-bezier(.16, 1, .3, 1);
+  --hx-ease: var(--ease-out, cubic-bezier(.16, 1, .3, 1));
   /* inner-layer palette */
   --c-lime: #c4ef3c;
   --c-pink: var(--pink);
@@ -53,7 +53,8 @@
 /* ==========================================================================
    First view
    ========================================================================== */
-.hero__fv { position: relative; z-index: 1; padding: 18px 10px 0; background: var(--paper); }
+/* the headline starts just below the fixed header (logo pill bottom = --hdr-h) */
+.hero__fv { position: relative; z-index: 1; padding: calc(var(--hdr-h, 67px) + 14px) 10px 0; background: var(--paper); }
 .hero__head { position: relative; }
 
 .hero__title {
@@ -66,8 +67,8 @@
 }
 .hero__aside {
   position: absolute; left: var(--aside-x, 58%); bottom: 6px; z-index: 1;
-  font-size: calc(var(--hero-fs, 12.4vw) * .176);
-  line-height: 1.1; letter-spacing: -.05em; white-space: nowrap;
+  font-size: calc(var(--hero-fs, 12.4vw) * .168);
+  line-height: 1.06; letter-spacing: -.05em; white-space: nowrap;
 }
 .hero__wire { display: block; }
 .hero__wire--head {
@@ -197,7 +198,7 @@
 
 .hi-fv { position: relative; height: var(--fv-h, 1200px); overflow: hidden; background: var(--c-aqua); }
 .hi-band { position: relative; }
-.hi-band--a { background: var(--c-lime); padding: 3px 10px 16px; }
+.hi-band--a { background: var(--c-lime); padding: calc(var(--hdr-h, 67px) + 4px) 10px 16px; }
 .hi-mega {
   margin: 0; font-size: 18.05vw; line-height: .75; letter-spacing: -.05em; text-transform: uppercase;
 }
@@ -225,13 +226,12 @@
 .hi-kicker {
   margin: 20px 0 0; font-size: 2.64vw; line-height: .92; letter-spacing: -.04em; text-transform: uppercase;
 }
-.hi-text {
-  margin: 14px 0 0; padding: 12px 14px; background: var(--c-aqua);
-  font-size: clamp(12px, 1.18vw, 19px); line-height: 1.3;
-}
-.hi-right { position: relative; flex: 1 1 auto; min-width: 0; background: var(--c-violet); }
+.hi-textbox { margin-top: 14px; padding: 12px 14px; background: var(--c-lime); }
+.hi-text { margin: 0; font-size: clamp(12px, 1.18vw, 19px); line-height: 1.3; }
+.hi-right { position: relative; flex: 1 1 auto; min-width: 0; background: var(--c-lemon); }
+.hi-titlebox { padding: 12px 18px 14px; background: var(--c-blue); }
 .hi-bntitle {
-  margin: 0; padding: 12px 18px 14px; background: var(--c-lemon);
+  margin: 0;
   font-family: var(--bn-serif); font-weight: 800; font-size: 2.08vw; line-height: 1.3; letter-spacing: -.01em;
 }
 .hi-right__body { display: flex; align-items: flex-start; gap: 2.2%; padding: 14px 12px 0; }
@@ -244,19 +244,19 @@
 
 /* recoloured copy of the manifesto boxes */
 .hero__about--inner { position: absolute; left: 0; right: 0; top: var(--about-top, 1200px); margin: 0; }
-.hero__about--inner .hb { background: var(--c-grey); }
-.hero__about--inner .hb--main { background: var(--c-pink); }
+.hero__about--inner .hb { background: #111; }
+.hero__about--inner .hb--main { background: var(--c-blue); }
 .hero__about--inner .hb--b3 { background: var(--c-lime); }
 .hero__about--inner .hb--b4 { background: var(--c-lemon); }
 .hero__about--inner .hb--b5 { background: var(--c-aqua); }
-.hero__about--inner .hb__w { border: 0; background: none; opacity: .5; mix-blend-mode: multiply; }
+.hero__about--inner .hb__w { border: 0; background: none; opacity: .45; mix-blend-mode: luminosity; }
 
 /* ==========================================================================
    Floating stamps
    ========================================================================== */
 .hero__stamps { position: absolute; inset: 0; z-index: 8; pointer-events: none; overflow: hidden; }
 .hstamp {
-  --st: 136px; --spd: 1;
+  --st: clamp(112px, 10.4vw, 150px); --spd: 1;
   position: absolute; left: 0; top: 0;
   width: var(--st); height: var(--st);
   padding: 0; border: 0; background: none; border-radius: 50%;
@@ -290,7 +290,7 @@
    Mobile (matches the reference's single-column collapse below 768px)
    ========================================================================== */
 @media (max-width: 767px) {
-  .hero__fv { padding: 42px 8px 0; }
+  .hero__fv { padding: calc(var(--hdr-h, 38px) + 10px) 8px 0; }
   .hero__aside { bottom: 2px; font-size: calc(var(--hero-fs, 13.6vw) * .25); line-height: 1.05; }
   .hero__wire--head {
     right: 12px; bottom: 0; width: 41.2%; aspect-ratio: 148 / 110;
@@ -336,7 +336,7 @@
   .hb--b5 .hb__big { font-size: 9.6vw; }
 
   /* inner layer, stacked */
-  .hi-band--a { padding: 46px 8px 6px; }
+  .hi-band--a { padding: calc(var(--hdr-h, 38px) + 8px) 8px 6px; }
   .hi-mega { font-size: 15.7vw; line-height: .78; }
   .hi-band--b { padding: 4px 8px 8px; }
   .hi-bnmega { font-size: 6.2vw; white-space: normal; max-width: 58%; }
@@ -345,8 +345,10 @@
   .hi-row { flex-direction: column; }
   .hi-left { width: 100%; padding: 12px 10px 10px; }
   .hi-kicker { margin-top: 10px; font-size: 5vw; }
-  .hi-text { margin-top: 8px; padding: 8px 10px; font-size: 12px; }
-  .hi-bntitle { padding: 8px 10px; font-size: 4.6vw; }
+  .hi-textbox { margin-top: 8px; padding: 8px 10px; }
+  .hi-text { font-size: 12px; }
+  .hi-titlebox { padding: 8px 10px; }
+  .hi-bntitle { font-size: 4.6vw; }
   .hi-right__body { padding: 8px 10px 0; gap: 10px; }
   .hi-bntext { font-size: 12px; line-height: 1.75; }
   .hi-img--tall { flex-basis: 34%; }

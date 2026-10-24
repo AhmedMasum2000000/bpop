@@ -31,7 +31,8 @@
   const latest = stories[0];
   const latestA = $("#hLatest");
   if (latest && latestA) {
-    latestA.href = storyUrl(latest.id);
+    latestA.href = storyUrl(latest.ref || latest.id); // episodes with `ref` open that story
+    latestA.setAttribute("aria-label", `Latest story: #${pad(num(latest))} ${latest.title || ""}`.trim());
     const bn = latest.bn || latest.tag;
     tick($("#hLatestText"), `#${pad(num(latest))} ${esc(latest.title)}${bn ? ` <span class="bn">${esc(bn)}</span>` : ""}&ensp;`, 55);
   }
@@ -55,9 +56,28 @@
   ssSet(TRANS_KEY, null);
 
   function ready() {
+    if (body.classList.contains("is-ready")) return;
     body.classList.remove("is-loading");
     body.classList.add("is-ready");
     document.dispatchEvent(new CustomEvent("bp:ready"));
+  }
+
+  // Arriving on page.html#section (e.g. from the story page nav): the browser's
+  // own fragment scroll is smooth (html{scroll-behavior:smooth}) and starts while
+  // the loader is up, so it is visibly mid-flight when the sheet lifts. Land
+  // instantly instead. Reloads / history moves keep the browser's restored spot.
+  function jumpToHash() {
+    if (location.hash.length < 2) return;
+    const nav = performance.getEntriesByType ? performance.getEntriesByType("navigation")[0] : null;
+    if (nav && nav.type !== "navigate") return;
+    let el = null;
+    try { el = document.getElementById(decodeURIComponent(location.hash.slice(1))); } catch (e) {}
+    if (!el) return;
+    const root = document.documentElement;
+    const prev = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+    el.scrollIntoView({ block: "start" }); // honours scroll-margin-top
+    root.style.scrollBehavior = prev;
   }
 
   if (loader) {
@@ -67,6 +87,7 @@
       if (finished) return;
       finished = true;
       loader.classList.add("is-done");
+      jumpToHash(); // before bp:ready, so listeners see the final scroll position
       ready();
       setTimeout(() => loader.remove(), 700);
     };
@@ -83,20 +104,24 @@
       const pitch = innerWidth < 768 ? 45 + (30 / 375) * innerWidth : 45 + (60 / 1440) * innerWidth;
       const n = Math.ceil(innerWidth / pitch) + 1;
       const grp = '<div class="loader__grp">' + "<span>0%</span>".repeat(n) + "</div>";
-      row.innerHTML = grp + grp.replace("loader__grp", 'loader__grp" aria-hidden="true');
-      const cells = $$("span", row);
+      if (row) row.innerHTML = grp + grp.replace("loader__grp", 'loader__grp" aria-hidden="true');
+      const cells = row ? $$("span", row) : [];
       requestAnimationFrame(() => loader.classList.add("is-on"));
 
       // Progress follows real loading (images + fonts + window load), eased,
       // never faster than ~1.4s and never longer than ~6s.
+      // A tab opened in the background never runs rAF, so the counter can't
+      // advance there: finish as soon as the page has loaded instead of
+      // waiting for the 8s safety net.
       let loaded = false;
-      addEventListener("load", () => (loaded = true), { once: true });
+      addEventListener("load", () => { loaded = true; if (document.hidden) finish(); }, { once: true });
       if (document.readyState === "complete") loaded = true;
       let shown = 0;
       let last = -1;
       const MIN = 1400, MAX = 6000;
       const imgs = () => [...document.images].filter((i) => i.loading !== "lazy");
       const step = (now) => {
+        if (finished) return;
         const el = now - t0;
         const list = imgs();
         const done = list.filter((i) => i.complete).length;
@@ -126,10 +151,12 @@
     .map((t, i) => `<p class="ptrans__line" style="--d:${i * 100}ms">${esc(t)}</p>`).join("")}</div>`;
   body.appendChild(sheet);
 
+  let navTimer = 0;
   document.addEventListener("click", (e) => {
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     const a = e.target.closest && e.target.closest("a[href]");
-    if (!a || a.target === "_blank" || a.hasAttribute("download")) return;
+    // only plain HTML links that open in this tab (SVG <a> has no string href)
+    if (!(a instanceof HTMLAnchorElement) || (a.target && a.target !== "_self") || a.hasAttribute("download")) return;
     const url = new URL(a.href, location.href);
     if (url.origin !== location.origin) return;
     const norm = (p) => p.replace(/index\.html$/, "");
@@ -141,36 +168,53 @@
     if (reduced) { location.href = url.href; return; }
     sheet.classList.add("is-on");
     ssSet(TRANS_KEY, "1");
-    setTimeout(() => (location.href = url.href), 900);
+    clearTimeout(navTimer);
+    navTimer = setTimeout(() => (location.href = url.href), 900);
   });
-  // coming back through the bfcache: drop the sheet again
+  // coming back through the bfcache: drop the sheet again, and cancel a
+  // navigation that was still pending when the page was frozen (Back pressed
+  // within the 900ms) so it can't fire after the restore
   addEventListener("pageshow", (e) => {
-    if (e.persisted) { sheet.classList.remove("is-on"); ssSet(TRANS_KEY, null); }
+    if (e.persisted) { clearTimeout(navTimer); sheet.classList.remove("is-on"); ssSet(TRANS_KEY, null); }
   });
 
   /* ---------- mobile menu ---------- */
   const menu = $("#menu");
   const menuBtn = $(".bnav__menu");
+  const menuLinks = menu ? $$("a", menu) : [];
   function openMenu() {
-    if (!menu) return;
+    if (!menu || !menuBtn || !menu.hidden) return;
     menu.hidden = false;
     requestAnimationFrame(() => menu.classList.add("is-open"));
     body.classList.add("menu-open");
     menuBtn.setAttribute("aria-expanded", "true");
     menuBtn.textContent = "CLOSE";
+    if (menuLinks[0]) menuLinks[0].focus({ preventScroll: true });
   }
-  function closeMenu() {
-    if (!menu || menu.hidden) return;
+  // restoreFocus: hand focus back to the MENU button (Escape / button) when it was inside the menu
+  function closeMenu(restoreFocus) {
+    if (!menu || !menuBtn || menu.hidden) return;
+    const focusInside = menu.contains(document.activeElement);
     menu.classList.remove("is-open");
     menu.hidden = true;
     body.classList.remove("menu-open");
     menuBtn.setAttribute("aria-expanded", "false");
     menuBtn.textContent = "MENU";
+    if (restoreFocus === true && focusInside) menuBtn.focus({ preventScroll: true });
   }
   if (menu && menuBtn) {
-    menuBtn.addEventListener("click", () => (menu.hidden ? openMenu() : closeMenu()));
-    $$("a", menu).forEach((a) => a.addEventListener("click", closeMenu));
-    addEventListener("keydown", (e) => e.key === "Escape" && closeMenu());
+    menuBtn.addEventListener("click", () => (menu.hidden ? openMenu() : closeMenu(true)));
+    menuLinks.forEach((a) => a.addEventListener("click", () => closeMenu()));
+    addEventListener("keydown", (e) => {
+      if (menu.hidden) return;
+      if (e.key === "Escape") { closeMenu(true); if (document.activeElement === body) menuBtn.focus({ preventScroll: true }); return; }
+      if (e.key !== "Tab") return;
+      // keep Tab inside the open sheet: links -> CLOSE button -> links
+      const items = [...menuLinks, menuBtn];
+      const i = items.indexOf(document.activeElement);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); items[items.length - 1].focus(); }
+      else if (!e.shiftKey && (i < 0 || i === items.length - 1)) { e.preventDefault(); items[0].focus(); }
+    });
     addEventListener("resize", () => innerWidth >= 1024 && closeMenu());
   }
 

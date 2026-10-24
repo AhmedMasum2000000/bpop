@@ -135,7 +135,7 @@
         ...(D.highlights || []).map((h) => ({ ...h, kind: "HIGHLIGHT", sec: "highlight", label: h.guest, labelBn: h.guestBn })),
         ...(D.guests || []).map((g) => ({ ...g, kind: "GUEST", sec: "guest", title: names(g.name), no: num(g.nos), label: names(g.name), labelBn: g.nameBn })),
         ...(D.episodes || []).map((e) => ({ ...e, kind: "EPISODE", sec: "episodes", label: e.tag })),
-      ].map((s, i) => ({ ...s, color: s.color || palette[i % palette.length] }));
+      ].map((s, i) => ({ ...s, color: /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(s.color || "") ? s.color : palette[i % palette.length] }));
       if (!all.length) return;
 
       const id = new URLSearchParams(location.search).get("id");
@@ -185,14 +185,33 @@
         `Full post: <a href="" data-link="instagram" target="_blank" rel="noopener">instagram.com/bpop.tags</a></p>`;
       $("#sProse").innerHTML = html;
 
-      // share
+      // share: native sheet -> async clipboard -> execCommand copy -> prompt.
+      // navigator.clipboard is undefined on plain-http hosts, so the old code
+      // silently did nothing there.
       const share = $("#sShare");
+      let shareT = 0;
+      const flash = (t) => { share.textContent = t; clearTimeout(shareT); shareT = setTimeout(() => (share.textContent = "SHARE"), 1600); };
+      const legacyCopy = (text) => {
+        const ta = document.createElement("textarea");
+        ta.value = text; ta.setAttribute("readonly", "");
+        ta.style.cssText = "position:fixed;top:0;left:0;opacity:0;pointer-events:none";
+        document.body.appendChild(ta); ta.select();
+        let ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) {}
+        ta.remove(); share.focus({ preventScroll: true });
+        return ok;
+      };
       share.addEventListener("click", async () => {
-        const data = { title: document.title, url: location.href };
+        const url = location.href;
+        if (navigator.share) {
+          try { await navigator.share({ title: document.title, url }); return; }
+          catch (e) { if (e && e.name === "AbortError") return; } // cancelled by the visitor
+        }
         try {
-          if (navigator.share) await navigator.share(data);
-          else { await navigator.clipboard.writeText(location.href); share.textContent = "COPIED"; setTimeout(() => (share.textContent = "SHARE"), 1600); }
+          if (navigator.clipboard && navigator.clipboard.writeText) { await navigator.clipboard.writeText(url); flash("COPIED"); return; }
         } catch (e) {}
+        if (legacyCopy(url)) { flash("COPIED"); return; }
+        try { window.prompt("Copy this link:", url); } catch (e) {}
       });
 
       // next story card

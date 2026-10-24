@@ -33,7 +33,8 @@
           <div class="gt__strip" aria-hidden="true"><span class="marquee__track"></span></div>
         </div>
         <div class="gt__under" aria-hidden="true">
-          <img src="${esc(g.img)}" alt="" loading="lazy" decoding="async">
+          <img class="gt__bg" src="${esc(g.img)}" alt="" loading="lazy" decoding="async">
+          <img class="gt__pic" src="${esc(g.img)}" alt="" loading="lazy" decoding="async">
           <p class="gt__big">${plain},<br>${name}</p>
         </div>
       </a>
@@ -85,12 +86,12 @@
     const show = (i) => {
       if (i === cur) return;
       const prev = imgs[cur], next = imgs[i];
-      imgs.forEach((im) => im !== prev && im !== next && (im.className = ""));
-      if (prev) prev.className = "is-prev";
-      next.className = "";
+      imgs.forEach((im) => im !== prev && im !== next && im.classList.remove("is-on", "is-prev"));
+      if (prev) prev.classList.replace("is-on", "is-prev");
+      next.classList.remove("is-on", "is-prev");
       next.style.zIndex = ++z;
       void next.offsetWidth;
-      next.className = "is-on";
+      next.classList.add("is-on");
       cur = i;
     };
     return { show, update: () => show(Math.floor(scrollY / step) % imgs.length) };

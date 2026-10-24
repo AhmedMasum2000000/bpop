@@ -62,6 +62,8 @@
 
 /* ---------- NEXT STORY ---------- */
 .snext { display: block; overflow: hidden; color: var(--ink); }
+/* full-bleed link: draw the focus ring inside, the viewport would clip its sides */
+.snext:focus-visible { outline-offset: -6px; }
 .snext__band { background: #fff; padding: 14px 0; text-align: center; overflow: hidden; }
 .snext__band p { font: 400 clamp(40px, 15.2vw, 260px)/.8 var(--en); letter-spacing: -.02em; white-space: nowrap; }
 .snext__bg {
