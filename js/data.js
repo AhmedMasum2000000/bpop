@@ -157,3 +157,55 @@ window.BPOP = {
     { name: "YOUR NAME HERE", role: "CONTRIBUTOR", credit: "Featuring", img: "assets/posts/p22.jpg", bio: "An open slot. Pitch us a tag, a zine or a night we missed and this line could be yours." },
   ],
 };
+
+// ---------------------------------------------------------------------------
+// Link the sections above to the real posts (window.BPOP_POSTS is generated from
+// content/posts.json by the server/build — see scripts/site.mjs). Each highlight and
+// guest opens its dedicated post page and uses that post's Instagram cover and copy;
+// the OTHER EPISODES board lists every post, so new posts appear automatically.
+(function link(B, P) {
+  if (!B || !P || !Array.isArray(P.posts)) return;
+  const bySlug = Object.fromEntries(P.posts.map((p) => [p.slug, p]));
+  const cats = Object.fromEntries((P.categories || []).map((c) => [c.slug, c]));
+  const map = {
+    "rebirth-of-dhaka-music": "dhaka-vinyl-cassette-revival",
+    "omdg-rave-revolution": "omdg-dhaka-rave-revolution",
+    "label-behind-bangla-pop": "qinetic-music-bengali-pop-label",
+    "bibi-russell": "bibi-russell-queen-of-bangladeshi-fashion",
+    "amit-kirti-metro": "dj-amit-kirti-metro-rail-dj-set",
+    "blackzang-bz": "blackzang-bangladesh-hip-hop",
+    "dj-shimmerie": "dj-shimmerie-dhaka-underground-parties",
+    "bodoshi": "bodoshi-arektu-single",
+    "hridita-anisha": "hridita-anisha-artist-profile",
+    "masscott": "mass-scott-modern-bangla-trap",
+    "samaha-subah": "samaha-subah-nakshi-kantha-art",
+    "nith-void": "lunith-void-psychedelic-culture-dhaka",
+    "arka": "special-k-omar-alkilani-arka",
+  };
+  const postMap = {};
+  for (const [id, slug] of Object.entries(map)) if (bySlug[slug]) postMap[id] = slug;
+  const apply = (item) => {
+    const p = bySlug[postMap[item.id]];
+    if (!p) return;
+    item.post = p.slug;
+    item.img = p.image;
+    if (Array.isArray(item.trail) && item.trail.length) item.trail = [p.image, ...item.trail.slice(1)];
+    if (p.lede) item.body = p.lede;
+    if (p.summaryBn) item.bnBody = p.summaryBn;
+  };
+  (B.highlights || []).forEach(apply);
+  (B.guests || []).forEach(apply);
+  B.episodes = P.posts.map((p) => {
+    postMap[p.slug] = p.slug;
+    return {
+      id: p.slug,
+      no: p.no,
+      tag: (cats[p.category] && cats[p.category].nameBn) || p.category,
+      title: p.title,
+      bn: p.titleBn || "",
+      img: p.image,
+      body: p.lede,
+    };
+  });
+  B.postMap = postMap;
+})(window.BPOP, window.BPOP_POSTS);

@@ -92,39 +92,49 @@
     el.addEventListener("pointerleave", off);
   });
 
-  /* ---------- strokes that bend under the cursor (desktop, fine pointer) ---------- */
-  const desk = matchMedia("(min-width: 768px)");
-  if (reduced || !matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+  /* ---------- strokes that bend under the cursor / finger and spring back ----------
+     Mouse: the stroke follows the pointer while it is near. Touch screens get the same
+     string physics driven by the finger (touch + scroll) and by the page's own scroll
+     speed, and each stroke draws itself in the first time it enters the viewport. */
+  if (reduced) return;
+  const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
 
   const N = 64;                 // points per stroke
-  const REACH = 70;             // px either side of the stroke that grabs it
+  const REACH = fine ? 70 : 56; // px either side of the stroke that grabs it
   const lines = $$(".pn__line", stage).map((el) => {
     el.innerHTML = `<svg aria-hidden="true" preserveAspectRatio="none"><path/></svg>`;
-    const r = parseFloat(getComputedStyle(el).getPropertyValue("--r")) || 0;
-    return { el, svg: el.firstChild, path: el.firstChild.firstChild, a: (r * Math.PI) / 180, L: 0,
+    el.classList.add("is-svg");
+    return { el, svg: el.firstChild, path: el.firstChild.firstChild, a: 0, L: 0, H: 10, A: 46,
       d: new Float32Array(N), v: new Float32Array(N), grab: null };
   });
 
+  // angle from the rendered transform, so it is right for both the desktop (--r) and
+  // mobile (--mr) layouts; viewBox in CSS px so the stroke keeps its real weight
   function size() {
     lines.forEach((ln) => {
       ln.L = ln.el.offsetWidth;
-      ln.svg.setAttribute("viewBox", `0 0 ${ln.L} 10`);
+      ln.H = ln.el.offsetHeight || 10;
+      ln.A = 4.6 * ln.H;                          // max bend: 46px desktop, 23px mobile
+      let a = 0;
+      try { const m = new DOMMatrixReadOnly(getComputedStyle(ln.el).transform); a = Math.atan2(m.b, m.a); } catch (_) {}
+      ln.a = a;
+      ln.svg.setAttribute("viewBox", `0 0 ${ln.L || 1} ${ln.H}`);
       draw(ln);
     });
   }
   function draw(ln) {
-    const step = ln.L / (N - 1);
-    let p = `M0 ${5 + ln.d[0]}`;
+    const step = ln.L / (N - 1), c = ln.H / 2;
+    let p = `M0 ${c + ln.d[0]}`;
     for (let i = 1; i < N - 1; i++) {
-      const x = i * step, y = 5 + ln.d[i];
-      const nx = x + step / 2, ny = 5 + (ln.d[i] + ln.d[i + 1]) / 2;
+      const x = i * step, y = c + ln.d[i];
+      const nx = x + step / 2, ny = c + (ln.d[i] + ln.d[i + 1]) / 2;
       p += ` Q${x.toFixed(1)} ${y.toFixed(2)} ${nx.toFixed(1)} ${ny.toFixed(2)}`;
     }
-    p += ` L${ln.L} ${5 + ln.d[N - 1]}`;
+    p += ` L${ln.L} ${c + ln.d[N - 1]}`;
     ln.path.setAttribute("d", p);
   }
 
-  let mx = -1e4, my = -1e4, raf = 0, near = false;
+  let mx = -1e4, my = -1e4, raf = 0, near = false, touching = false;
   function aim() {
     near = false;
     lines.forEach((ln) => {
@@ -140,17 +150,18 @@
   function tick() {
     let moving = false;
     lines.forEach((ln) => {
-      const step = ln.L / (N - 1), d = ln.d, v = ln.v, g = ln.grab;
+      if (!ln.L) return;
+      const step = ln.L / (N - 1), d = ln.d, v = ln.v, g = ln.grab, A = ln.A;
       for (let i = 1; i < N - 1; i++) {
         let f = -0.05 * d[i] + 0.35 * (d[i - 1] + d[i + 1] - 2 * d[i]);
         if (g) {
           const t = (i * step - g.u) / 46;
-          f += Math.exp(-t * t) * (Math.max(-46, Math.min(46, g.w)) - d[i]) * 0.22;
+          f += Math.exp(-t * t) * (Math.max(-A, Math.min(A, g.w)) - d[i]) * 0.22;
         }
         v[i] = (v[i] + f) * 0.86;
       }
       for (let i = 1; i < N - 1; i++) {
-        d[i] += v[i];
+        d[i] = Math.max(-1.4 * A, Math.min(1.4 * A, d[i] + v[i]));
         if (Math.abs(v[i]) > 0.02 || Math.abs(d[i]) > 0.05) moving = true;
       }
       draw(ln);
@@ -158,16 +169,77 @@
     raf = moving || near ? requestAnimationFrame(tick) : 0;
   }
   const wake = () => { if (!raf) raf = requestAnimationFrame(tick); };
+  const inView = () => { const r = stage.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight; };
+  // a sideways kick shaped like a plucked string (zero at both ends)
+  const kick = (ln, amt) => {
+    for (let i = 1; i < N - 1; i++) ln.v[i] += amt * Math.sin((Math.PI * i) / (N - 1));
+  };
+
+  // mouse
   addEventListener("pointermove", (e) => {
-    if (e.pointerType !== "mouse" || !desk.matches) return;
-    const r = stage.getBoundingClientRect();
-    if (r.bottom < 0 || r.top > innerHeight) return;
+    if (e.pointerType !== "mouse" || !inView()) return;
     mx = e.clientX; my = e.clientY;
     aim();
     if (near) wake();
   }, { passive: true });
-  stage.addEventListener("pointerleave", () => { lines.forEach((ln) => (ln.grab = null)); near = false; wake(); });
-  onScroll(() => { if (near) { aim(); wake(); } });
+  stage.addEventListener("pointerleave", (e) => {
+    if (e.pointerType !== "mouse") return;
+    lines.forEach((ln) => (ln.grab = null)); near = false; wake();
+  });
+
+  // finger: passive listeners, so they never hold up the page scroll
+  const feel = (e) => {
+    const t = e.touches[0];
+    if (!t) return;
+    touching = true;
+    mx = t.clientX; my = t.clientY;
+    aim();
+    wake();
+  };
+  const letGo = (e) => {
+    if (e.touches.length) return;
+    touching = false; mx = my = -1e4;
+    lines.forEach((ln) => (ln.grab = null)); near = false; wake();
+  };
+  stage.addEventListener("touchstart", feel, { passive: true });
+  stage.addEventListener("touchmove", feel, { passive: true });
+  stage.addEventListener("touchend", letGo, { passive: true });
+  stage.addEventListener("touchcancel", letGo, { passive: true });
+
+  // scrolling: re-aim under a resting finger / mouse, and on touch screens let the
+  // strokes lag behind the page so they sway with the scroll speed
+  let lastY = scrollY;
+  onScroll(() => {
+    const y = scrollY, dy = y - lastY;
+    lastY = y;
+    if (near || touching) { aim(); wake(); }
+    if (fine || !dy || !inView()) return;
+    const k = Math.max(-40, Math.min(40, dy)) * 0.03;
+    lines.forEach((ln) => {
+      if (!ln.L) return;
+      const b = ln.el.getBoundingClientRect();
+      if (b.bottom < 0 || b.top > innerHeight) return;
+      const c = Math.cos(ln.a);
+      kick(ln, -k * (c < 0 ? -1 : 1) * Math.max(0.5, Math.abs(c)));
+    });
+    wake();
+  });
+
+  // touch screens: draw each stroke in as it arrives, then give it a pluck
+  if (!fine && "IntersectionObserver" in window) {
+    stage.classList.add("is-draw");
+    const io = new IntersectionObserver((ens) => {
+      ens.forEach((en) => {
+        if (!en.isIntersecting) return;
+        io.unobserve(en.target);
+        const ln = lines.find((l) => l.el === en.target);
+        en.target.classList.add("is-in");
+        if (ln) setTimeout(() => { kick(ln, ln.A * 0.55); wake(); }, 650);
+      });
+    }, { rootMargin: "0px 0px -12% 0px" });
+    lines.forEach((ln, k) => { ln.el.style.setProperty("--dl", `${(k % 3) * 0.08}s`); io.observe(ln.el); });
+  }
+
   size();
   onResize(size);
 })();

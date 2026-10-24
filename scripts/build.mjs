@@ -1,16 +1,30 @@
-// Copies the static site into dist/ for hosts that expect a build output folder.
-import { cpSync, existsSync, mkdirSync, rmSync } from "node:fs";
-import { join } from "node:path";
-import { fileURLToPath } from "node:url";
+// Static export of the dynamic site.
+// 1. Writes every generated page (posts/, topics/, stories/, sitemap.xml, robots.txt, feed.xml, 404.html,
+//    js/posts.js) into the repo root, so the repo itself works on GitHub Pages / any static host.
+// 2. Copies the whole site into dist/ with the home page fully server-rendered (best for SEO).
+import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { ROOT_DIR, loadContent, routes, renderHome } from "./site.mjs";
 
-const root = fileURLToPath(new URL("..", import.meta.url));
-const out = join(root, "dist");
-const entries = ["index.html", "story.html", "css", "js", "assets", ".nojekyll"];
+const C = loadContent();
+const write = (base, file, body) => {
+  const out = join(base, file);
+  mkdirSync(dirname(out), { recursive: true });
+  writeFileSync(out, body);
+};
 
-rmSync(out, { recursive: true, force: true });
-mkdirSync(out);
-for (const name of entries) {
-  const src = join(root, name);
-  if (existsSync(src)) cpSync(src, join(out, name), { recursive: true });
+// generated folders are rebuilt from scratch so deleted posts disappear
+for (const d of ["posts", "topics", "stories"]) rmSync(join(ROOT_DIR, d), { recursive: true, force: true });
+const pages = routes(C);
+for (const [file, render] of pages) write(ROOT_DIR, file, render());
+
+const dist = join(ROOT_DIR, "dist");
+rmSync(dist, { recursive: true, force: true });
+mkdirSync(dist);
+for (const name of ["story.html", "css", "js", "assets", "posts", "topics", "stories", "sitemap.xml", "robots.txt", "feed.xml", "404.html", ".nojekyll"]) {
+  const src = join(ROOT_DIR, name);
+  if (existsSync(src)) cpSync(src, join(dist, name), { recursive: true });
 }
-console.log(`Built static site into ${out}`);
+write(dist, "index.html", renderHome(C));
+
+console.log(`Rendered ${pages.length} files (${C.posts.length} posts, ${C.categories.length} topics) into the repo root and dist/`);

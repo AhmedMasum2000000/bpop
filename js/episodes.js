@@ -76,16 +76,16 @@
 
   // Let the cards glide for one transition (toggles only — not drags or resizes).
   let animT;
-  function glide() {
+  function glide(ms = 1300) {
     if (reduced) return;
     board.classList.add("is-anim");
     clearTimeout(animT);
-    animT = setTimeout(() => board.classList.remove("is-anim"), 1300);
+    animT = setTimeout(() => board.classList.remove("is-anim"), ms);
   }
 
   // Scatter: stratified random spots so even a few dozen cards blanket the board,
   // spilling a little past every edge like a pile of paper.
-  function scatter() {
+  function scatter(spread = 0.18) {
     const W = board.clientWidth, H = board.clientHeight;
     const cw = cards[0].offsetWidth, ch = cards[0].offsetHeight;
     const n = cards.length;
@@ -101,7 +101,7 @@
       const y = -ch * 0.25 + (Math.floor(k / cols) + Math.random()) * cellH;
       pos[i] = { x: x - li.offsetLeft, y: y - li.offsetTop };
       c.style.zIndex = stack[i] + 1;
-      c.style.transitionDelay = reduced ? "" : `${(Math.random() * 0.18).toFixed(3)}s`;
+      c.style.transitionDelay = reduced ? "" : `${(Math.random() * spread).toFixed(3)}s`;
       put(i);
     });
     z = n + 1;
@@ -143,49 +143,121 @@
     glide();
     setPage(0);
     on ? lineUp() : scatter();
+    dealt = true;
+    float();
   }
   btnGrid.addEventListener("click", () => setGrid(!grid));
   btnNext.addEventListener("click", () => setPage(page + 1));
   btnPrev.addEventListener("click", () => setPage(page - 1));
 
-  // drag (mouse / pen only — touch keeps scrolling the page and taps open the story)
+  // drag. Mouse / pen: press and drag. Touch: a sideways swipe picks the card up at
+  // once, or press-and-hold lifts it for any direction; a plain vertical swipe keeps
+  // scrolling the page (cards are `touch-action: pan-y`) and a tap opens the story.
   board.addEventListener("pointerdown", (e) => { lastPointer = e.pointerType; }, true);
   cards.forEach((c, i) => {
-    let id = null, sx = 0, sy = 0, ox = 0, oy = 0;
-    c.addEventListener("pointerdown", (e) => {
-      if (grid || e.pointerType === "touch" || e.button !== 0 || e.target.closest("a")) return;
-      e.preventDefault();
-      id = e.pointerId;
-      c.setPointerCapture(id);
-      sx = e.clientX; sy = e.clientY; ox = pos[i].x; oy = pos[i].y;
+    let id = null, sx = 0, sy = 0, ox = 0, oy = 0, hold = 0;
+    let touch = false, armed = false, dragging = false, skipClick = false;
+    const lift = () => {
+      dragging = true;
       c.style.zIndex = ++z;
       c.classList.add("is-drag");
+      if (touch) c.classList.add("is-lift");
       cursor.classList.add("is-down");
+    };
+    c.addEventListener("pointerdown", (e) => {
+      if (grid || !e.isPrimary || e.target.closest("a")) return;
+      touch = e.pointerType === "touch";
+      if (!touch && e.button !== 0) return;
+      id = e.pointerId; sx = e.clientX; sy = e.clientY; ox = pos[i].x; oy = pos[i].y;
+      armed = dragging = skipClick = false;
+      clearTimeout(hold);
+      if (!touch) {
+        e.preventDefault();
+        c.setPointerCapture(id);
+        lift();
+        return;
+      }
+      hold = setTimeout(() => {
+        if (id === null || dragging) return;
+        armed = true;
+        c.style.zIndex = ++z;
+        c.classList.add("is-lift");
+        if (navigator.vibrate) try { navigator.vibrate(8); } catch (_) {}
+      }, 300);
     });
     c.addEventListener("pointermove", (e) => {
       if (e.pointerId !== id) return;
+      const dx = e.clientX - sx, dy = e.clientY - sy;
+      if (!dragging) {
+        if (!touch) return;
+        if (armed || (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy) * 1.2)) {
+          try { c.setPointerCapture(id); } catch (_) {}
+          lift();
+        } else {
+          if (Math.abs(dx) + Math.abs(dy) > 12) clearTimeout(hold);   // the page is scrolling
+          return;
+        }
+      }
       const li = c.parentElement, W = board.clientWidth, H = board.clientHeight;
-      const x = Math.max(60 - c.offsetWidth, Math.min(W - 60, li.offsetLeft + ox + e.clientX - sx));
-      const y = Math.max(60 - c.offsetHeight, Math.min(H - 60, li.offsetTop + oy + e.clientY - sy));
+      const x = Math.max(60 - c.offsetWidth, Math.min(W - 60, li.offsetLeft + ox + dx));
+      const y = Math.max(60 - c.offsetHeight, Math.min(H - 60, li.offsetTop + oy + dy));
       pos[i] = { x: x - li.offsetLeft, y: y - li.offsetTop };
       put(i);
     });
+    // once a touch drag (or a held card) owns the finger, keep the page still
+    c.addEventListener("touchmove", (e) => { if ((dragging || armed) && e.cancelable) e.preventDefault(); }, { passive: false });
     const end = (e) => {
       if (e.pointerId !== id) return;
-      id = null;
-      c.classList.remove("is-drag");
+      clearTimeout(hold);
+      if (dragging || armed) skipClick = true;
+      id = null; armed = dragging = false;
+      c.classList.remove("is-drag", "is-lift");
       cursor.classList.remove("is-down");
     };
     c.addEventListener("pointerup", end);
     c.addEventListener("pointercancel", end);
+    c.addEventListener("contextmenu", (e) => { if (touch && (armed || dragging || skipClick)) e.preventDefault(); });
     // touch taps anywhere on a card, and clicks in grid mode, open the story
     c.addEventListener("click", (e) => {
       if (e.target.closest("a")) return;
+      if (skipClick) { skipClick = false; return; }
       if (grid || lastPointer === "touch") location.href = c.dataset.href;
     });
     // keyboard: bring a buried card to the front when its link gets focus
     c.addEventListener("focusin", () => { if (!grid) c.style.zIndex = ++z; });
   });
+
+  /* ---------- touch screens: deal the cards out on entry, then let them float ----------
+     Phones get no hover/drag cursor, so the motion has to come from the page itself:
+     the cards start lined up and are thrown across the board the first time it scrolls
+     into view, and while scrolling each card drifts at its own rate like loose paper. */
+  const touchUI = !matchMedia("(hover: hover) and (pointer: fine)").matches;
+  let dealt = !touchUI || reduced;
+  if (touchUI) board.classList.add("is-touch");
+  const drift = cards.map(() => (Math.random() * 2 - 1) * (0.45 + Math.random() * 0.55));
+  function float() {
+    if (!touchUI || reduced) return;
+    const r = board.getBoundingClientRect();
+    if (r.bottom < -100 || r.top > innerHeight + 100) return;
+    const p = (innerHeight - r.top) / (innerHeight + r.height) - 0.5;   // -.5 … .5 across the pass
+    const amp = Math.min(70, innerHeight * 0.09);
+    cards.forEach((c, i) => {
+      c.style.translate = grid || !dealt ? "" : `0 ${(p * 2 * amp * drift[i]).toFixed(1)}px`;
+    });
+  }
+  if (!dealt && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver((ens) => {
+      if (!ens.some((en) => en.isIntersecting)) return;
+      io.disconnect();
+      dealt = true;
+      if (grid) return;
+      glide(2200);
+      scatter(0.7);
+      float();
+    }, { rootMargin: "0px 0px -25% 0px" });
+    io.observe(board);
+  } else dealt = true;
+  onScroll(float);
 
   /* ---------- cursor badge (fine pointers) ---------- */
   if (!reduced && matchMedia("(hover: hover) and (pointer: fine)").matches) {
@@ -222,7 +294,8 @@
     const W = board.clientWidth;
     if (W === lastW) return;            // ignore mobile URL-bar height jitter
     lastW = W;
-    if (grid) setPage(page); else scatter();
+    if (grid) setPage(page); else if (dealt) scatter(); else lineUp();
+    float();
   }
   layout();
   onResize(layout);

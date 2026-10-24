@@ -1,0 +1,754 @@
+{
+ "site": {
+  "name": "B-POP Tags",
+  "nameBn": "বাংলা পপ ট্যাগস",
+  "tagline": "Curating pop-culture & the underground scene of Bangladesh",
+  "instagram": "https://www.instagram.com/bpop.tags/",
+  "linktree": "https://linktr.ee/bpoptags",
+  "lang": "en"
+ },
+ "categories": [
+  {
+   "slug": "music",
+   "name": "Music & Rave",
+   "nameBn": "গান ও রেভ",
+   "blurb": "DJs, producers, labels, rappers and the rave crews powering Bangladesh's new sound."
+  },
+  {
+   "slug": "art",
+   "name": "Art & Fashion",
+   "nameBn": "শিল্প ও ফ্যাশন",
+   "blurb": "Artists, designers, installations and the visual culture shaping Bangladesh."
+  },
+  {
+   "slug": "pop-culture",
+   "name": "Pop Culture & Analog",
+   "nameBn": "পপ কালচার",
+   "blurb": "Vinyl, cassettes, comics and the people keeping Bangladeshi pop culture alive."
+  },
+  {
+   "slug": "events",
+   "name": "Events & Radar",
+   "nameBn": "ইভেন্ট ও রাডার",
+   "blurb": "Weekly roundups and the underground events in Dhaka you shouldn't miss."
+  },
+  {
+   "slug": "film",
+   "name": "Film & Talks",
+   "nameBn": "ফিল্ম ও আলোচনা",
+   "blurb": "Film festivals, screenings and talks on moving image in Bangladesh."
+  }
+ ],
+ "posts": [
+  {
+   "slug": "dhaka-scene-roundup-23-october-2026",
+   "code": "De1ugkjGiMq",
+   "instagram": "https://www.instagram.com/p/De1ugkjGiMq/",
+   "date": "2026-10-23",
+   "category": "events",
+   "title": "Which One Did We Miss? Dhaka Scene Roundup, 23 October 2026",
+   "image": "assets/ig/De1ugkjGiMq.jpg",
+   "caption": "WHICH ONE DID WE MISS? COMMENT DOWN BELOW",
+   "handles": [],
+   "hashtags": [],
+   "links": []
+  },
+  {
+   "slug": "fiquzic-emerging-artist-showcase",
+   "code": "DeuaDVaN7NT",
+   "instagram": "https://www.instagram.com/p/DeuaDVaN7NT/",
+   "date": "2026-10-20",
+   "category": "music",
+   "title": "Fiquzic: An Emerging Star on Our Radar",
+   "image": "assets/ig/DeuaDVaN7NT.jpg",
+   "caption": "@get2know.tags Presents an exclusive showcase on @fiquzic , an emerging star drafted on our Radar. Keep this between us until the algorithm catches up on him 🔥\n\nWHO'S NEXT???",
+   "handles": [
+    "fiquzic",
+    "get2know.tags"
+   ],
+   "hashtags": [],
+   "links": []
+  },
+  {
+   "slug": "fiquzic-early-access",
+   "code": "DetMuKZCDz5",
+   "instagram": "https://www.instagram.com/p/DetMuKZCDz5/",
+   "date": "2026-10-19",
+   "category": "music",
+   "title": "Early Access: Catching Fiquzic Before the Algorithm Does",
+   "image": "assets/ig/DetMuKZCDz5.jpg",
+   "caption": "EARLY ACCESS\nYou’re catching him before the algorithm wakes up\nJoin the journey of @fiquzic \nAn exclusive interview coming soon on @get2know.tags",
+   "handles": [
+    "fiquzic",
+    "get2know.tags"
+   ],
+   "hashtags": [],
+   "links": []
+  },
+  {
+   "slug": "dhaka-collectives-upcoming-events-october-2026",
+   "code": "Deo9KHmmm8F",
+   "instagram": "https://www.instagram.com/p/Deo9KHmmm8F/",
+   "date": "2026-10-18",
+   "category": "events",
+   "title": "Dhaka Collectives to Watch: Upcoming Events, October 2026",
+   "image": "assets/ig/Deo9KHmmm8F.jpg",
+   "caption": "WHICH ONE ARE YOU MOST EXCITED FOR? COMMENT BELOW!\n@gyanjam_collective \n@breakfastclub.dhaka \n@hxtch.me \n@returntosanctuary \n@no.cturna.l \n@nightwavebd \n@sapphire.dacca \n@aakaarpencil",
+   "handles": [
+    "aakaarpencil",
+    "breakfastclub.dhaka",
+    "gyanjam_collective",
+    "hxtch.me",
+    "nightwavebd",
+    "no.cturna.l",
+    "returntosanctuary",
+    "sapphire.dacca"
+   ],
+   "hashtags": [],
+   "links": []
+  },
+  {
+   "slug": "bodoshi-arektu-single",
+   "code": "Dehcxm2OYvs",
+   "instagram": "https://www.instagram.com/p/Dehcxm2OYvs/",
+   "date": "2026-10-15",
+   "category": "music",
+   "title": "Bodoshi's \"Arektu\": The Single That Holds Its Breath",
+   "image": "assets/ig/Dehcxm2OYvs.jpg",
+   "caption": "Haven’t heard it yet? Go take a listen and see if you can hold your breath too 🎤",
+   "handles": [],
+   "hashtags": [],
+   "links": []
+  },
+  {
+   "slug": "hong-kong-radio-show-bangladeshi-djs-producers",
+   "code": "DeRzjEKmkXo",
+   "instagram": "https://www.instagram.com/p/DeRzjEKmkXo/",
+   "date": "2026-10-09",
+   "category": "music",
+   "title": "Hong Kong Radio Show Opportunity for Bangladeshi DJs and Producers",
+   "image": "assets/ig/DeRzjEKmkXo.jpg",
+   "caption": "An incredible opportunity for Bangladeshi Producers and DJ's. \nSend a mix, a bio, a photo and your set goes out from Hong Kong to listeners worldwide, free. \n\nA radio show gives you what promoters, press and visa applications all look for: proof that your work is heard internationally. That’s the barrier that keeps Bangladeshi artists off stages abroad.\n\nFollow @blu.maron and @subjecttosound and comment 'IN' on their post which is attached below, and they’ll DM you the application link. \nNot a DJ? Share this.",
+   "handles": [
+    "blu.maron",
+    "subjecttosound"
+   ],
+   "hashtags": [],
+   "links": []
+  },
+  {
+   "slug": "dhaka-scene-roundup-6-october-2026",
+   "code": "DeKFn_XmvpQ",
+   "instagram": "https://www.instagram.com/p/DeKFn_XmvpQ/",
+   "date": "2026-10-06",
+   "category": "events",
+   "title": "Which One Did You Miss? Dhaka Scene Roundup, 6 October 2026",
+   "image": "assets/ig/DeKFn_XmvpQ.jpg",
+   "caption": "WHICH ONE DID YOU MISS?",
+   "handles": [],
+   "hashtags": [],
+   "links": []
+  },
+  {
+   "slug": "mass-scott-modern-bangla-trap",
+   "code": "DeE5AmdGtBo",
+   "instagram": "https://www.instagram.com/p/DeE5AmdGtBo/",
+   "date": "2026-10-04",
+   "category": "music",
+   "title": "Mass $cott and the Sound of Modern Bangla Trap",
+   "image": "assets/ig/DeE5AmdGtBo.jpg",
+   "caption": "If you don't know MASS $COTT yet, consider this your late pass. \nFrom \"DHAKA OPS\" to \"Lunch In Dhaka,\" he’s shaping the sound of modern Bangla Trap. 🇧🇩🔥",
+   "handles": [],
+   "hashtags": [],
+   "links": []
+  },
+  {
+   "slug": "off-the-grid-dhaka-events-october-2026",
+   "code": "Dd_wNX0miEq",
+   "instagram": "https://www.instagram.com/p/Dd_wNX0miEq/",
+   "date": "2026-10-02",
+   "category": "events",
+   "title": "Off the Grid, On Our Radar: Dhaka Events, October 2026",
+   "image": "assets/ig/Dd_wNX0miEq.jpg",
+   "caption": "OFF THE GRID BUT DEFINITELY ON OUR RADAR📡\nComment below which one are you excited for!",
+   "handles": [],
+   "hashtags": [],
+   "links": []
+  },
+  {
+   "slug": "dhaka-scene-roundup-22-september-2026",
+   "code": "DdmGfb8GlVm",
+   "instagram": "https://www.instagram.com/p/DdmGfb8GlVm/",
+   "date": "2026-09-22",
+   "category": "events",
+   "title": "Which One Did You Miss? Dhaka Scene Roundup, 22 September 2026",
+   "image": "assets/ig/DdmGfb8GlVm.jpg",
+   "caption": "WHICH ONE DID YOU MISS LAST WEEK?\n\nAlso comment below which one we failed to capture on our radar this week.",
+   "handles": [],
+   "hashtags": [],
+   "links": []
+  },
+  {
+   "slug": "dhaka-events-to-save-september-2026",
+   "code": "DdgqPZ3Giqr",
+   "instagram": "https://www.instagram.com/p/DdgqPZ3Giqr/",
+   "date": "2026-09-20",
+   "category": "events",
+   "title": "Dhaka Events to Save: September 2026",
+   "image": "assets/ig/DdgqPZ3Giqr.jpg",
+   "caption": "🔖 Save this so you don’t miss out.\n💬 Which event are you pulling up to?",
+   "handles": [],
+   "hashtags": [],
+   "links": []
+  },
+  {
+   "slug": "hridita-anisha-artist-profile",
+   "code": "DdbsZr3iNoa",
+   "instagram": "https://www.instagram.com/p/DdbsZr3iNoa/",
+   "date": "2026-09-18",
+   "category": "art",
+   "title": "Hridita Anisha: The Artist Building Culture, Not Decorating It",
+   "image": "assets/ig/DdbsZr3iNoa.jpg",
+   "caption": "SHE’S NOT DECORATING CULTURE. SHE’S BUILDING IT.\n\nHridita Anisha (@hridita_anisha) takes the simplest lines of childhood to speak on a nation’s deepest questions: identity, abandonment, belonging. From indie zines to live interactive gallery walls right in front of your eyes—this is what a true pillar looks like.",
+   "handles": [
+    "hridita_anisha"
+   ],
+   "hashtags": [],
+   "links": []
+  },
+  {
+   "slug": "physical-media-shops-dhaka-part-2",
+   "code": "DdWVvOImiI5",
+   "instagram": "https://www.instagram.com/p/DdWVvOImiI5/",
+   "date": "2026-09-16",
+   "category": "pop-culture",
+   "title": "Physical Media Shops in Dhaka, Part 2",
+   "image": "assets/ig/DdWVvOImiI5.jpg",
+   "caption": "LOOKING FOR PHYSICAL MEDIA SHOPS IN DHAKA? WE GOT YOU! (PART-2)\n.\n.\n#analogrevival #hiddengemsdhaka #retrovibes #DhakaDiaries #cassetteculture #physicalmedia",
+   "handles": [],
+   "hashtags": [
+    "DhakaDiaries",
+    "analogrevival",
+    "cassetteculture",
+    "hiddengemsdhaka",
+    "physicalmedia",
+    "retrovibes"
+   ],
+   "links": []
+  },
+  {
+   "slug": "omdg-dhaka-rave-revolution",
+   "code": "DdTIkwxmpQY",
+   "instagram": "https://www.instagram.com/p/DdTIkwxmpQY/",
+   "date": "2026-09-15",
+   "category": "music",
+   "title": "OMDG and the Genesis of Bangladesh's Rave Revolution",
+   "image": "assets/ig/DdTIkwxmpQY.jpg",
+   "caption": "No clubs? No infrastructure? No problem.\nEnter OMDG- one of the architects behind the genesis of Bangladesh’s rave revolution⚡️\n.\n#OMDG #DhakaRaveRevolution #DeshiElectronica #MixmagLabDhaka #BreakfastClubDhaka",
+   "handles": [],
+   "hashtags": [
+    "BreakfastClubDhaka",
+    "DeshiElectronica",
+    "DhakaRaveRevolution",
+    "MixmagLabDhaka",
+    "OMDG"
+   ],
+   "links": []
+  },
+  {
+   "slug": "bpop-iizxxzii-spotify-playlist",
+   "code": "DdMHZgdgdxT",
+   "instagram": "https://www.instagram.com/p/DdMHZgdgdxT/",
+   "date": "2026-09-12",
+   "category": "music",
+   "title": "Gatekeeping Was Never an Option: The B-POP x IIZXXZII Playlist",
+   "image": "assets/ig/DdMHZgdgdxT.jpg",
+   "caption": "Gatekeeping was never an option. Cooked up with raw Serotonin and illegal levels of main-character energy, Curated by Us alongside IIZXXZII. Tap in. 🔊 Link in Bio.\n.\n.\nExternal Link : https://open.spotify.com/playlist/5MOQ9NrNpdNyAv6X5VeQ1R?si=A2B5wLSgQgefpTl7iMmTDQ",
+   "handles": [],
+   "hashtags": [],
+   "links": [
+    "https://open.spotify.com/playlist/5MOQ9NrNpdNyAv6X5VeQ1R?si=A2B5wLSgQgefpTl7iMmTDQ"
+   ]
+  },
+  {
+   "slug": "physical-media-shops-dhaka-part-1",
+   "code": "DdJiAnymvvn",
+   "instagram": "https://www.instagram.com/p/DdJiAnymvvn/",
+   "date": "2026-09-11",
+   "category": "pop-culture",
+   "title": "Physical Media Shops in Dhaka, Part 1",
+   "image": "assets/ig/DdJiAnymvvn.jpg",
+   "caption": "LOOKING FOR PHYSICAL MEDIA SHOPS IN DHAKA? WE GOT YOU! (PART-1)\n#analogrevival #hiddengemsdhaka #retrovibes #DhakaDiaries #cassetteculture #physicalmedia",
+   "handles": [],
+   "hashtags": [
+    "DhakaDiaries",
+    "analogrevival",
+    "cassetteculture",
+    "hiddengemsdhaka",
+    "physicalmedia",
+    "retrovibes"
+   ],
+   "links": []
+  },
+  {
+   "slug": "dhaka-scene-roundup-9-september-2026",
+   "code": "DdEbIWMmg9C",
+   "instagram": "https://www.instagram.com/p/DdEbIWMmg9C/",
+   "date": "2026-09-09",
+   "category": "events",
+   "title": "Which One Did You Miss? Dhaka Scene Roundup, 9 September 2026",
+   "image": "assets/ig/DdEbIWMmg9C.jpg",
+   "caption": "WHICH ONE DID YOU MISS THIS WEEK?\n\nAlso comment below which one we failed to capture on our radar this week.",
+   "handles": [],
+   "hashtags": [],
+   "links": []
+  },
+  {
+   "slug": "qinetic-music-bengali-pop-label",
+   "code": "Dc_SDWKmm49",
+   "instagram": "https://www.instagram.com/p/Dc_SDWKmm49/",
+   "date": "2026-09-07",
+   "category": "music",
+   "title": "The Takeover of Qinetic Music: The Label Rewriting Bengali Pop",
+   "image": "assets/ig/Dc_SDWKmm49.jpg",
+   "caption": "The Insane Takeover of Qinetic Music.\nSwipe to see how this indie label completely rewrote the DNA of Bengali Pop. #QineticMusic #BanglaPop #BengaliMusic @mcfaf.a @sharafnazaar @jamshedps @qineticmusic @qineticnetwork",
+   "handles": [
+    "jamshedps",
+    "mcfaf.a",
+    "qineticmusic",
+    "qineticnetwork",
+    "sharafnazaar"
+   ],
+   "hashtags": [
+    "BanglaPop",
+    "BengaliMusic",
+    "QineticMusic"
+   ],
+   "links": []
+  },
+  {
+   "slug": "alliance-francaise-dhaka-open-art-exhibition",
+   "code": "Dc6ZfJAGjtA",
+   "instagram": "https://www.instagram.com/p/Dc6ZfJAGjtA/",
+   "date": "2026-09-05",
+   "category": "art",
+   "title": "Open to All Art Exhibition at Alliance Française de Dhaka",
+   "image": "assets/ig/Dc6ZfJAGjtA.jpg",
+   "caption": "OPEN TO ALL ART EXHIBITION!\nUniting a varied collection of pieces that investigate the deep connections connecting personal recollection, selfhood, lived experience, and unspoken narratives - Presented by @afdhaka and curated by @zeba_dhaka . \n\n📅 1–9 September 2026\n📍 La Galerie, Alliance Française de Dhaka\n26 Mirpur Road, Dhanmondi, Dhaka\n🕒 Open daily: 3:00–9:00 PM",
+   "handles": [
+    "afdhaka",
+    "zeba_dhaka"
+   ],
+   "hashtags": [],
+   "links": []
+  },
+  {
+   "slug": "jamils-comics-bangladesh-comic-book-culture",
+   "code": "Dc3sMdzmhdc",
+   "instagram": "https://www.instagram.com/p/Dc3sMdzmhdc/",
+   "date": "2026-09-04",
+   "category": "pop-culture",
+   "title": "Jamil's Comics and Bangladesh's Comic Book Culture",
+   "image": "assets/ig/Dc3sMdzmhdc.jpg",
+   "caption": "Thank you to @akmalamgirkhanjamil bhai for turning a personal passion into a cultural movement! Bangladesh's pop culture and comic book community owe a massive debt of gratitude to your vision with @jamilscomics . Absolute legend! 🙌\n\n#bangladeshi #banglacomics #comicbookculture #dhaka",
+   "handles": [
+    "akmalamgirkhanjamil",
+    "jamilscomics"
+   ],
+   "hashtags": [
+    "banglacomics",
+    "bangladeshi",
+    "comicbookculture",
+    "dhaka"
+   ],
+   "links": []
+  },
+  {
+   "slug": "samaha-subah-nakshi-kantha-art",
+   "code": "DcyhbIZGsjr",
+   "instagram": "https://www.instagram.com/p/DcyhbIZGsjr/",
+   "date": "2026-09-02",
+   "category": "art",
+   "title": "Samaha Subah: Bangladeshi Heritage Setting International Trends",
+   "image": "assets/ig/DcyhbIZGsjr.jpg",
+   "caption": "Thank you for the art that you create Samaha Subah @samaha1507 via @siz.by.ss and @rejectproject.shop. Because of innovating people like you Bangladeshi heritage is setting international trends ❤️\n#bangladeshi #nakshikantha #bangladeshrural #arka",
+   "handles": [
+    "rejectproject.shop",
+    "samaha1507",
+    "siz.by.ss"
+   ],
+   "hashtags": [
+    "arka",
+    "bangladeshi",
+    "bangladeshrural",
+    "nakshikantha"
+   ],
+   "links": []
+  },
+  {
+   "slug": "productive-chill-networking-dhaka",
+   "code": "DctwezfSH0_",
+   "instagram": "https://www.instagram.com/p/DctwezfSH0_/",
+   "date": "2026-08-31",
+   "category": "events",
+   "title": "Productive Chill: Networking for People Who Don't Like Networking",
+   "image": "assets/ig/DctwezfSH0_.jpg",
+   "caption": "NETWORKING FOR PEOPLE WHO DON'T LIKE NETWORKING 🛜 ARE YOU READY?\n\nProductive Chill is a space for young professionals and creatives to experiment, share and critique ideas or projects. \n\nThey can be ongoing, complete or unsuccessful. If you've learned something from the process we want to hear from you. If you're stuck in the process, you might benefit from applying to join a session.\n\nWhether you're a startup bro, singer-songwriter, fashion designer, writer or pediatrician—if you love what you do, want to figure out the thing you want to do, or find the right people to help you do it, come along!\n\nWithout REGISTRATION and CONFIRMATION, there will be no entry. Fill out the application with the LINK IN BIO. Or, here's the URL here:\n\nhttps://forms.gle/ASzR1SEBQ39NpbUz7",
+   "handles": [],
+   "hashtags": [],
+   "links": [
+    "https://forms.gle/ASzR1SEBQ39NpbUz7"
+   ]
+  },
+  {
+   "slug": "coxs-bazar-festival-january-2027-tickets",
+   "code": "Dcq2v0RmuF9",
+   "instagram": "https://www.instagram.com/p/Dcq2v0RmuF9/",
+   "date": "2026-08-30",
+   "category": "events",
+   "title": "Cox's Bazar Festival, 29-30 January 2027: Tier 2 Passes",
+   "image": "assets/ig/Dcq2v0RmuF9.jpg",
+   "caption": "ARE Y'ALL READY FOR JANUARY 29 & 30?\nMid Sale Tier 2 selling fast!\n🎟 2 Day Multi Pass — ৳14,000\n✨ VIP Pass — ৳24,000\n\nSecure your place before the next tier arrives. See you at Cox’s Bazar 🦀🌅",
+   "handles": [],
+   "hashtags": [],
+   "links": []
+  },
+  {
+   "slug": "omnigroove-dj-workshop-dhaka",
+   "code": "DcoTLefGqPT",
+   "instagram": "https://www.instagram.com/p/DcoTLefGqPT/",
+   "date": "2026-08-29",
+   "category": "music",
+   "title": "Learn From the Best: Omnigroove Collective DJ Workshop",
+   "image": "assets/ig/DcoTLefGqPT.jpg",
+   "caption": "LEARN FROM THE BEST. An exciting DJ workshop is presented by @omnigroove.collective ,where you'll be able to learn from Bangladesh's finest @psytaraa.artist (@deltatribe.bd ) @vampbetch_ @momi_hoque . Don't miss out this excellent opportunity. Learn the art of DJing 🎛️🎧\n\n#djculture #bangladeshidj #psytara #raveculture",
+   "handles": [
+    "deltatribe.bd",
+    "momi_hoque",
+    "omnigroove.collective",
+    "psytaraa.artist",
+    "vampbetch_"
+   ],
+   "hashtags": [
+    "bangladeshidj",
+    "djculture",
+    "psytara",
+    "raveculture"
+   ],
+   "links": []
+  },
+  {
+   "slug": "lunith-void-psychedelic-culture-dhaka",
+   "code": "DclGLm8moU4",
+   "instagram": "https://www.instagram.com/p/DclGLm8moU4/",
+   "date": "2026-08-28",
+   "category": "art",
+   "title": "Lunith.Void: Pushing Boundaries in Dhaka's Psychedelic Culture",
+   "image": "assets/ig/DclGLm8moU4.jpg",
+   "caption": "Pushing boundaries is what Raiyan @lunith.void does best. From making history to creating art @psydrip.dhk , his crafting represents the psychedelic culture of love and unity. Thank you for doing what you do best and keep raving hard.\n#dhakagram #bangladeshi #psy",
+   "handles": [
+    "lunith.void",
+    "psydrip.dhk"
+   ],
+   "hashtags": [
+    "bangladeshi",
+    "dhakagram",
+    "psy"
+   ],
+   "links": []
+  },
+  {
+   "slug": "dj-shimmerie-dhaka-underground-parties",
+   "code": "Dcijt77GlqC",
+   "instagram": "https://www.instagram.com/p/Dcijt77GlqC/",
+   "date": "2026-08-27",
+   "category": "music",
+   "title": "DJ Shimmerie and the Heart of Dhaka's Underground Parties",
+   "image": "assets/ig/Dcijt77GlqC.jpg",
+   "caption": "FEEL THE SHIMMER, THE HEART OF DHAKA'S UNDERGROUND PARTIES AIN'T STOPPING SOON! @dj_shimmerie\n\n@monsoon.beatz hit the jackpot\n\n#djshimmerie #dhakarave #raveculture",
+   "handles": [
+    "dj_shimmerie",
+    "monsoon.beatz"
+   ],
+   "hashtags": [
+    "dhakarave",
+    "djshimmerie",
+    "raveculture"
+   ],
+   "links": []
+  },
+  {
+   "slug": "dow-run-club-5k-community-run-gulshan",
+   "code": "DcjCCYZiJK7",
+   "instagram": "https://www.instagram.com/p/DcjCCYZiJK7/",
+   "date": "2026-08-27",
+   "category": "events",
+   "title": "Dow Run Club 5K Community Run in Gulshan",
+   "image": "assets/ig/DcjCCYZiJK7.jpg",
+   "caption": "আমরা কিন্তু যাচ্ছি দৌড়াতে, LET'S GO @the.dowrunclub \nPresented by @batabangladesh \n\nLINK: https://docs.google.com/forms/d/e/1FAIpQLSdy1Z1XBW3wwYPDzlWeVLQO6cCgVfnjcObvdgQiqzxI7mOl4A/viewform?pli=1 \n\nJoin them for a 5KM Community Run — a morning built around movement, connection, and consistency. 🏃‍♀️🏃‍♂️\n\nThey are bringing together runners, creators, students, and professionals who believe the best communities are built one run at a time.\n\n📍 Shahabuddin Park, Gulshan, Dhaka\n⏰ Run starts at 6:00 AM\n🔗 Sign-up is essential via the link\n🎟️ Free registration | Limited spots available\n\nCome run, connect, and be part of the community.\nSee you at the start line.\n#dowrun #dowrunclub #dhaka #fridaymorning",
+   "handles": [
+    "batabangladesh",
+    "the.dowrunclub"
+   ],
+   "hashtags": [
+    "dhaka",
+    "dowrun",
+    "dowrunclub",
+    "fridaymorning"
+   ],
+   "links": [
+    "https://docs.google.com/forms/d/e/1FAIpQLSdy1Z1XBW3wwYPDzlWeVLQO6cCgVfnjcObvdgQiqzxI7mOl4A/viewform?pli=1"
+   ]
+  },
+  {
+   "slug": "dhaka-vinyl-cassette-revival",
+   "code": "Dcgda40mt4o",
+   "instagram": "https://www.instagram.com/p/Dcgda40mt4o/",
+   "date": "2026-08-26",
+   "category": "pop-culture",
+   "title": "Dhaka's Vinyl and Cassette Revival",
+   "image": "assets/ig/Dcgda40mt4o.jpg",
+   "caption": "Dhaka is enjoying rejuvenation of the forgotten memory. NOW ARE YOU READY?\n\nThanks to @vinylmadnessbd @saadimhuq @sursaptakvinyls @cassettebangla and many more.",
+   "handles": [
+    "cassettebangla",
+    "saadimhuq",
+    "sursaptakvinyls",
+    "vinylmadnessbd"
+   ],
+   "hashtags": [],
+   "links": []
+  },
+  {
+   "slug": "special-k-omar-alkilani-arka",
+   "code": "DceRWkBknk1",
+   "instagram": "https://www.instagram.com/p/DceRWkBknk1/",
+   "date": "2026-08-25",
+   "category": "music",
+   "title": "Special K x Omar Alkilani: The Magic Produced by Arka",
+   "image": "assets/ig/DceRWkBknk1.jpg",
+   "caption": "EXPERIENCE THE MAGIC created by @specialk.music and @omaralkilaniofficial , produced by @arkamag.co @arkacollective.co and @hijazconvoy . \nALL THE CREDITS GO THE RESPECTIVE CREATORS, WE DONT KEEP ANY. \n.\n. #bangladeshi #popmusic #popculture #arabmusic #arka",
+   "handles": [
+    "arkacollective.co",
+    "arkamag.co",
+    "hijazconvoy",
+    "omaralkilaniofficial",
+    "specialk.music"
+   ],
+   "hashtags": [
+    "arabmusic",
+    "arka",
+    "bangladeshi",
+    "popculture",
+    "popmusic"
+   ],
+   "links": []
+  },
+  {
+   "slug": "embryonic-shifts-stroboscopic-art-installation",
+   "code": "DcdQFojGiK8",
+   "instagram": "https://www.instagram.com/p/DcdQFojGiK8/",
+   "date": "2026-08-25",
+   "category": "art",
+   "title": "Embryonic Shifts: A Stroboscopic STE(A)M Art Installation",
+   "image": "assets/ig/DcdQFojGiK8.jpg",
+   "caption": "JOIN THE EMBRYONIC SHIFTS — a STE(A)M art installation\nWhere light, sculpture and science move as one.\n\nWe're thrilled to announce Embryonic Shifts, a new stroboscopic sculptural installation by artist Saiqa Shabnam Chowdhury and engineer Samiul Hoque, supported by the British Council under WOW – Women of the World Bangladesh 2025–26.\n\nUsing flashing light and the earliest principles of animation, the work makes still sculptures appear to move while telling a story of metamorphosis - a phenomenon every living being goes through in some form or the other.\n\nTaking a clear, empirical stance, the project posits that gender identity is an outcome of biological internal systems rather than an endless social debate. Using persistence of vision—the work examines human perception through empirical science. Fiction and sequential storytelling serve as methods to explore structural realities.\n📍 Shala, Aloki\nProgramme\nOpening night — 6:00 pm, Saturday, 22 August 2026 [remarks + introduction to the work]\nExhibition hours — 1:00 PM to 9:00 PM",
+   "handles": [],
+   "hashtags": [],
+   "links": []
+  },
+  {
+   "slug": "blackzang-bangladesh-hip-hop",
+   "code": "DcbnA60Ej9h",
+   "instagram": "https://www.instagram.com/p/DcbnA60Ej9h/",
+   "date": "2026-08-24",
+   "category": "music",
+   "title": "Blackzang: The King Who Redefined Bangladeshi Hip Hop",
+   "image": "assets/ig/DcbnA60Ej9h.jpg",
+   "caption": "WE CELEBRATE AND ENJOY THE GRACE OF THE KING @blackzang_bz , Who redefined the hip hop scene in Bangladesh and took it to global heights. Love and Prayers. \n.\n#hiphopbangladesh #hiphopnation #bangladeshi #blackzang",
+   "handles": [
+    "blackzang_bz"
+   ],
+   "hashtags": [
+    "bangladeshi",
+    "blackzang",
+    "hiphopbangladesh",
+    "hiphopnation"
+   ],
+   "links": []
+  },
+  {
+   "slug": "dimff-2027-mobile-film-festival",
+   "code": "Dca0t3NmgUa",
+   "instagram": "https://www.instagram.com/p/Dca0t3NmgUa/",
+   "date": "2026-08-24",
+   "category": "film",
+   "title": "DIMFF 2027: Dhaka's Open Door Mobile Film Festival",
+   "image": "assets/ig/Dca0t3NmgUa.jpg",
+   "caption": "Requirements? JUST SHOW UP!!!\nAn open door mobile film fest in 2027 brought to you by @dimff.ulab and @officialulab .\n\n5 Categories. 1 Global Stage. Endless Stories.\n📂 Categories:\n🚪 Open Door (Mobile/Camera)\n📱 Vertical Film (Mobile/Camera, Vertical Format)\n🎥 Short Film (Mobile/Camera)\n⏱️ One Minute Film (Mobile Only)\n🌍 Citizen Journalism (Mobile Only)\nWhether you’re a student or a filmmaker from anywhere in the world—this is your chance to tell your story using the power of mobile filmmaking.\n📅 Deadline: September 24, 2026\n🌐 Submit via FilmFreeway: https://filmfreeway.com/DIMFF\nLights. Camera. Mobile.\nLet your story be seen.\n🌐 Website: https://dimff.net/\n📸 Instagram: https://www.instagram.com/dimff.ulab/\n🔗 LinkedIn: https://www.linkedin.com/company/dimff-ulab\n📺 YouTube: https://youtube.com/c/DhakaInternationalMobileFilmFestival\n#dimff #dimff2027 #filmfestival #filmfestivals #dhaka",
+   "handles": [
+    "dimff.ulab",
+    "officialulab"
+   ],
+   "hashtags": [
+    "dhaka",
+    "dimff",
+    "dimff2027",
+    "filmfestival",
+    "filmfestivals"
+   ],
+   "links": [
+    "https://filmfreeway.com/DIMFF",
+    "https://dimff.net/",
+    "https://www.instagram.com/dimff.ulab/",
+    "https://www.linkedin.com/company/dimff-ulab",
+    "https://youtube.com/c/DhakaInternationalMobileFilmFestival"
+   ]
+  },
+  {
+   "slug": "halfcian-salted-jus-bangladesh-global-music",
+   "code": "DcYOcOEEkot",
+   "instagram": "https://www.instagram.com/p/DcYOcOEEkot/",
+   "date": "2026-08-23",
+   "category": "music",
+   "title": "Halfcian of Salted Jus: Bangladesh's Golden Boy on the Global Stage",
+   "image": "assets/ig/DcYOcOEEkot.jpg",
+   "caption": "BIG THANKS to @halfcian aka @sahriarisdead from @saltedjus for making Bangladesh elevated in the global stage of music industry. We are looking for more lives and tours like the old times when you return to the country, our golden boy 🔥\n.\n#ambientmusic #saltedjus #bangladeshimusic #bangladeshi #banglapop",
+   "handles": [
+    "halfcian",
+    "sahriarisdead",
+    "saltedjus"
+   ],
+   "hashtags": [
+    "ambientmusic",
+    "bangladeshi",
+    "bangladeshimusic",
+    "banglapop",
+    "saltedjus"
+   ],
+   "links": []
+  },
+  {
+   "slug": "dj-amit-kirti-metro-rail-dj-set",
+   "code": "DcYlglUCEZ5",
+   "instagram": "https://www.instagram.com/p/DcYlglUCEZ5/",
+   "date": "2026-08-23",
+   "category": "music",
+   "title": "DJ Amit Kirti's DJ Set Inside the Bangladesh Metro Rail",
+   "image": "assets/ig/DcYlglUCEZ5.jpg",
+   "caption": "@djamitkirti Bro definitely knew the vision and did the set in Bangladesh Metrorail 🚇 back in 2024. HARD!\n.\n#dhaka #djset #metrorail #banglarave",
+   "handles": [
+    "djamitkirti"
+   ],
+   "hashtags": [
+    "banglarave",
+    "dhaka",
+    "djset",
+    "metrorail"
+   ],
+   "links": []
+  },
+  {
+   "slug": "introverted-film-erratic-infrastructure-british-council-dhaka",
+   "code": "DcZTU9HE0X7",
+   "instagram": "https://www.instagram.com/p/DcZTU9HE0X7/",
+   "date": "2026-08-23",
+   "category": "film",
+   "title": "Introverted Film and Erratic Infrastructure: Moving Image in the UK and Bangladesh",
+   "image": "assets/ig/DcZTU9HE0X7.jpg",
+   "caption": "DON'T MISS OUT THIS EXCELLENT SESSION. Registration Info Below:\n\nDelighted to invite 'Introverted Film and Erratic Infrastructure: Histories of Moving Image in the UK and Bangladesh', a lecture and discussion featuring Benjamin Cook (@bwrc00k) in conversation with Dr. Imran Firdaus (@imranfirdaus17) at the British Council Dhaka.\n\nThe event forms part of Midnight's Third Child, a year-long research project organised by Benjamin Cook and Kehkasha Sabah, supported through the British Council's Connections Through Culture Grant, with sponsorship from the Durjoy Bangladesh Foundation.\n\nMidnight’s Third Child takes its name from Naeem Mohaiemen’s 2020 book, in which Mohaiemen describes Bangladesh’s cultural identity as occupying a “third space” within the larger postcolonial narratives of South Asia.\n\nWe invite you to an illustrated lecture where Benjamin Cook will trace the history of artists’ film in the UK, from the experimental and politically urgent practices of the 1960s and 70s.\n\nIn turn, Dr. Imran Firdaus will respond through a parallel genealogy of moving-image practice in Bangladesh—from film societies and cooperative practices to short-film movements, digital video and installation.\n\nTogether, they ask:\nWhere do these histories converge?\nWhere do they diverge?\nWhat happens to artists’ film when there is no institution built to hold it?\n\nVenue: British Council Auditorium\n5 Fuller Road, Dhaka 1000\n📅 Sunday, 30 August 2026\n⏰ 5–7 PM\n\nRSVP:\nKindly RSVP by Thursday, 29 August 2026\n\nScan the RSVP QR code or follow the link:\nhttps://forms.cloud.microsoft/e/gQ5EVQ3T4h?origin=lprLink",
+   "handles": [
+    "bwrc00k",
+    "imranfirdaus17"
+   ],
+   "hashtags": [],
+   "links": [
+    "https://forms.cloud.microsoft/e/gQ5EVQ3T4h?origin=lprLink"
+   ]
+  },
+  {
+   "slug": "rokte-joba-bengali-anime-ontology",
+   "code": "DcVm2D5GiTD",
+   "instagram": "https://www.instagram.com/p/DcVm2D5GiTD/",
+   "date": "2026-08-22",
+   "category": "art",
+   "title": "Rokte Joba: Anime Ontology and Bengali Post-Mysticism",
+   "image": "assets/ig/DcVm2D5GiTD.jpg",
+   "caption": "ARTIST EXPOSURE: @roktejoba @aashnai__ \nattend at https://soloshow.online/symposium_mysticism\n\nrokte joba: anime ontology & bengali post mysticism\n\nfor the symposium of post-mysticism at @solo___show (21st-23rd) august, an offsite multimedia showcase and lecture by @aashnai__ \n\ndrawing from her manga practice, she will be sharing the construction of her pictorial world through the theological, iconographic and affective traditions whose social conditions no longer feel inhabitable. on circulating images in the post-liturgical land, enchanted modernities and how the devotional image sustains fractures.\n\nrokte joba is an ongoing image practice and philosophical investigation into the bengali anime ontology.\n\nalong with:\n\njamie sutcliffe + zoe taylor, meltdown your books, elizabeth gabrielle lee, jacob canet-gibson, ojitosdeemoji, nina, yubel, safi, V, nkieve, denpa archivist, knightmaid, yudi wu, vincent, et aliae, saffron-p, carla martin // september: phoenix isla kea, chrysanthi, mirror_doll, archive_doll, evah, sofia, REM, rahul hendriksen, cali constanza, shubi, daniel",
+   "handles": [
+    "aashnai__",
+    "roktejoba",
+    "solo___show"
+   ],
+   "hashtags": [],
+   "links": [
+    "https://soloshow.online/symposium_mysticism"
+   ]
+  },
+  {
+   "slug": "bibi-russell-queen-of-bangladeshi-fashion",
+   "code": "DcWp1-rEpP2",
+   "instagram": "https://www.instagram.com/p/DcWp1-rEpP2/",
+   "date": "2026-08-22",
+   "category": "art",
+   "title": "Bibi Russell: The Queen of Bangladesh's Fashion Industry",
+   "image": "assets/ig/DcWp1-rEpP2.jpg",
+   "caption": "Bengali Pop Culture wasn't built in a day, Innovators came and paved the path for development and global recognition. @bibi_russell_official , the queen of our fashion designing industry, deserves all the flowers for her work and dedication. @bibirussellshop @bibirussell_dhaniakhali \n\n#bibirussell #fashiondesigners #bangladeshidesigner #popculturebd",
+   "handles": [
+    "bibi_russell_official",
+    "bibirussell_dhaniakhali",
+    "bibirussellshop"
+   ],
+   "hashtags": [
+    "bangladeshidesigner",
+    "bibirussell",
+    "fashiondesigners",
+    "popculturebd"
+   ],
+   "links": []
+  },
+  {
+   "slug": "cybersigilism-bangladeshi-fashion",
+   "code": "DcWBVximjZU",
+   "instagram": "https://www.instagram.com/p/DcWBVximjZU/",
+   "date": "2026-08-22",
+   "category": "art",
+   "title": "The Silent Rise of Cybersigilism in Bangladeshi Fashion",
+   "image": "assets/ig/DcWBVximjZU.jpg",
+   "caption": "ARE YOU READY for the silent rise of the chromatic cybersigilism era, which has taken over the Bangladeshi Fashion Landscape or ARE YOU AFRAID? 🕷🦇\n.\n#bangladeshfashion #bangladeshi #cybersigilism #y2koutfits",
+   "handles": [],
+   "hashtags": [
+    "bangladeshfashion",
+    "bangladeshi",
+    "cybersigilism",
+    "y2koutfits"
+   ],
+   "links": []
+  },
+  {
+   "slug": "the-beginning-bpop-tags",
+   "code": "DcUQ6yvk0xQ",
+   "instagram": "https://www.instagram.com/p/DcUQ6yvk0xQ/",
+   "date": "2026-08-21",
+   "category": "pop-culture",
+   "title": "The Beginning: Why B-POP Tags Exists",
+   "image": "assets/ig/DcUQ6yvk0xQ.jpg",
+   "caption": "The Beginning. হইলো শুরু।",
+   "handles": [],
+   "hashtags": [],
+   "links": []
+  },
+  {
+   "slug": "electric-rise-of-bangladesh",
+   "code": "DcUdxfMkuhA",
+   "instagram": "https://www.instagram.com/p/DcUdxfMkuhA/",
+   "date": "2026-08-21",
+   "category": "music",
+   "title": "The Electric Rise of Bangladesh's Sound",
+   "image": "assets/ig/DcUdxfMkuhA.jpg",
+   "caption": "Witness the ELECTRIC rise of Bangladesh. 🎧",
+   "handles": [],
+   "hashtags": [],
+   "links": []
+  }
+ ]
+}

@@ -5,7 +5,16 @@ window.BP = (() => {
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const pad = (n) => String(n).padStart(2, "0");
-  const storyUrl = (id) => `story.html?id=${encodeURIComponent(id)}`;
+  // Every section item links to its dedicated post page (D.postMap is built in data.js from js/posts.js).
+  // <meta name="bp-root"> holds the path back to the site root on nested pages (e.g. "../../").
+  const rootMeta = document.querySelector('meta[name="bp-root"]');
+  const ROOT = rootMeta ? rootMeta.content : "";
+  const storyUrl = (id) => {
+    const slug = (D.postMap && D.postMap[id]) || id;
+    return D.postMap && Object.values(D.postMap).includes(slug)
+      ? `${ROOT}posts/${encodeURIComponent(slug)}/`
+      : `${ROOT}story.html?id=${encodeURIComponent(id)}`;
+  };
 
   // Fill a marquee track with two identical halves so a -50% loop is seamless
   function fillMarquee(track, text, copies = 12) {
