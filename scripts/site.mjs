@@ -153,7 +153,9 @@ function page({ C, root, path, title, description, image, type = "website", head
   <meta name="twitter:description" content="${esc(description)}" />
   <meta name="twitter:image" content="${esc(img)}" />
   ${head}
-  <link rel="icon" href="${root}assets/logo.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="${root}assets/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="${root}assets/icon-512.png" />
+  <link rel="apple-touch-icon" href="${root}assets/apple-touch-icon.png" />
   <link rel="alternate" type="application/rss+xml" title="${esc(site.name)}" href="${root}feed.xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -469,9 +471,9 @@ export function render404(C) {
   );
 }
 
-// Home: index.html is the template. Server fills <!--BP:HEAD--> and the #archive section.
+// Home: templates/home.html is the template. Server/build fill <!--BP:HEAD--> and the #archive section.
 export function renderHome(C) {
-  let html = read("index.html");
+  let html = read("templates/home.html");
   const { site } = C;
   const desc = `${site.name} (${site.nameBn}) — ${site.tagline}. ${C.posts.length} stories on Dhaka's music, rave, art, fashion, film and events.`;
   const head = `<link rel="canonical" href="${esc(site.url)}" />

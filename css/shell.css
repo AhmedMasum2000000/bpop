@@ -24,8 +24,7 @@
 .loader.is-done { clip-path: inset(0 0 100% 0); }
 /* sits exactly where the header logo will be, so the wipe hands over seamlessly */
 .loader__logo {
-  position: absolute; top: calc(var(--edge) + 10px); left: 50%; transform: translateX(-50%);
-  height: 28px; width: auto;
+  position: absolute; top: var(--edge); left: 50%; transform: translateX(-50%);
 }
 .loader__row {
   position: absolute; top: 50%; left: 0; width: 100%; transform: translateY(-50%);
@@ -96,14 +95,27 @@
   .hchip:hover .hchip__icon i { background: var(--pink); }
 }
 
-/* centre: logo pill */
+/* centre: the logo as a die-cut sticker (assets/logo-sticker.png: white outline + ink shadow baked in) — pops in, tilts on hover */
 .header__logo {
-  justify-self: center; display: block;
-  padding: 9px 30px; background: #fff; border: var(--line); border-radius: 999px;
-  transition: background-color .3s ease-out;
+  justify-self: center; display: block; position: relative;
+  padding: 0; border-radius: 10px; text-decoration: none;
+  transform-origin: 50% 60%;
 }
-.header__logo img { height: 28px; width: auto; max-width: none; }
-@media (hover: hover) { .header__logo:hover { background: var(--ink); } }
+.header__logo img, .loader__logo {
+  height: var(--logo-h); width: auto; max-width: none; display: block;
+  transition: transform .45s var(--ease-out);
+}
+body.is-ready .header__logo { animation: logo-pop .7s var(--ease-out) both; }
+@keyframes logo-pop {
+  0% { transform: scale(.7) rotate(-6deg); }
+  55% { transform: scale(1.12) rotate(3deg); }
+  80% { transform: scale(.97) rotate(-1deg); }
+  100% { transform: none; }
+}
+@media (hover: hover) {
+  .header__logo:hover img { transform: translate(-2px, -3px) rotate(-3deg) scale(1.06); }
+}
+.header__logo:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
 
 /* right: latest story (label | ticker); inverts on hover */
 .hlatest {
@@ -219,13 +231,10 @@ body.menu-open { overflow: hidden; }
   .hchip__icon { padding: 0 4px; }
   .hchip__icon i { width: 12px; height: 12px; }
   .hchip__icon svg { width: 5px; height: 5px; }
-  .header__logo { padding: 5px 11px; }
-  .header__logo img { height: 16px; }
   .hlatest { width: auto; height: auto; }
   .hlatest__label { padding: 4px; border-right: 0; font-size: 10px; }
   .hlatest__text { display: none; }
 
-  .loader__logo { top: calc(var(--edge) + 6px); height: 16px; }
   .loader__grp { gap: calc(30 / 375 * 100vw); padding-right: calc(30 / 375 * 100vw); }
   .loader__tag, .ptrans__tag { flex-direction: column; gap: 4px; }
   .loader__line, .ptrans__line { font-size: 16px; }
@@ -247,5 +256,7 @@ body.menu-open { overflow: hidden; }
 
 @media (prefers-reduced-motion: reduce) {
   .tick > span, .loader__grp { animation: none; }
+  body.is-ready .header__logo { animation: none; }
+  .header__logo img { transition: none; }
   .bnav__center { transform: translate(-50%, 0); opacity: 1; }
 }

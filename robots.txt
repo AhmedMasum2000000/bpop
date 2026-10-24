@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ahmedmasum2000000.github.io/bpop/sitemap.xml
+Sitemap: https://bpop.bd/sitemap.xml

@@ -1,0 +1,46 @@
+# Keeps the repo itself a finished website: whenever content, templates, styles or scripts change,
+# re-render every page (npm run build) and commit the generated files. Hostinger's Git auto-deploy
+# then publishes the result on bpop.bd within seconds.
+name: Build site
+
+on:
+  push:
+    branches: [main, claude/charming-hopper-pi4bxg]
+    paths-ignore:
+      - "posts/**"
+      - "topics/**"
+      - "stories/**"
+      - "index.html"
+      - "404.html"
+      - "sitemap.xml"
+      - "robots.txt"
+      - "feed.xml"
+      - "js/posts.js"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm run build
+        env:
+          SITE_URL: https://bpop.bd/
+      - name: Commit generated pages
+        run: |
+          git add -A index.html 404.html sitemap.xml robots.txt feed.xml js/posts.js posts topics stories
+          if git diff --cached --quiet; then echo "Generated pages already up to date"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Rebuild generated pages"
+          git push

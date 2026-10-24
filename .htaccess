@@ -1,0 +1,35 @@
+# B-POP Tags — Hostinger (LiteSpeed/Apache) settings
+Options -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # https + no www (Cloudflare usually does this already; harmless if so)
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteCond %{HTTP:CF-Visitor} !"scheme":"https"
+  RewriteRule ^ https://bpop.bd%{REQUEST_URI} [L,R=301]
+  RewriteCond %{HTTP_HOST} ^www\.bpop\.bd$ [NC]
+  RewriteRule ^ https://bpop.bd%{REQUEST_URI} [L,R=301]
+  # source, build tooling and dot-files are not part of the public site
+  RewriteRule ^(\.git|\.github|content|scripts|templates|node_modules|dist)(/|$) - [R=404,L]
+  RewriteRule ^(package\.json|package-lock\.json|README\.md|\.gitignore)$ - [R=404,L]
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/xml text/xml text/plain image/svg+xml
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 hour"
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType application/xml "access plus 1 hour"
+  ExpiresByType text/css "access plus 1 day"
+  ExpiresByType text/javascript "access plus 1 hour"
+  ExpiresByType application/javascript "access plus 1 hour"
+  ExpiresByType image/png "access plus 30 days"
+  ExpiresByType image/jpeg "access plus 30 days"
+  ExpiresByType image/webp "access plus 30 days"
+</IfModule>

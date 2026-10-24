@@ -36,7 +36,8 @@
   --gutter: clamp(12px, 2.2vw, 32px);
   --edge: 20px;               /* fixed chrome inset (header, bottom bar) */
   --nav-h: 36px;              /* height of the floating bottom bar */
-  --hdr-h: 67px;              /* top edge to bottom of the header logo pill */
+  --logo-h: 60px;             /* header + loader logo height */
+  --hdr-h: 82px;              /* top edge to bottom of the header logo */
 
   /* motion */
   --ease-out: cubic-bezier(.16, 1, .3, 1);
@@ -44,7 +45,7 @@
   --ease-wipe: cubic-bezier(.65, 0, .35, 1);
 }
 @media (max-width: 767px) {
-  :root { --edge: 10px; --hdr-h: 38px; }
+  :root { --edge: 10px; --logo-h: 38px; --hdr-h: 50px; }
 }
 
 *, *::before, *::after { box-sizing: border-box; }
